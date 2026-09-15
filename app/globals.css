@@ -1,0 +1,400 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --ink: #2b1338;
+  --ink-soft: #6b4a7d;
+  --ink-faint: #9a80a8;
+  --accent: #d6248a;
+  --accent-2: #ff7a3d;
+  --accent-deep: #7b1fb0;
+  --gold: #e0632a;
+  --gold-glow: #ffcfa0;
+  --scene-1: #fdf2fa;
+  --scene-2: #f8e3f4;
+  --scene-3: #f4d9ee;
+  --panel-bg: rgba(255, 255, 255, 0.6);
+  --panel-bg-strong: rgba(255, 255, 255, 0.82);
+  --panel-border: rgba(255, 255, 255, 0.75);
+  --panel-edge: rgba(43, 19, 56, 0.06);
+  --panel-shadow: rgba(123, 31, 176, 0.16);
+  --input-bg: rgba(255, 255, 255, 0.75);
+  --input-fg: #2b1338;
+  --input-border: rgba(43, 19, 56, 0.14);
+  --divider: rgba(43, 19, 56, 0.1);
+  --nav-bg: rgba(250, 225, 245, 0.6);
+  --select-arrow: #7b1fb0;
+  --sel-bg: #d6248a;
+  --sel-fg: #ffffff;
+  --scrollbar: #d6248a;
+  --scrollbar-track: rgba(214, 36, 138, 0.12);
+  --ok: #187a48;
+  --err: #b23a2e;
+  --dot-color: rgba(43, 19, 56, 0.1);
+  --select-option-bg: #ffffff;
+  --select-option-fg: #2b1338;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #fdf3ff;
+  --ink-soft: #dfc2ea;
+  --ink-faint: #b18ec2;
+  --accent: #ff3fa6;
+  --accent-2: #ff7a3d;
+  --accent-deep: #7b1fb0;
+  --gold: #ff9142;
+  --gold-glow: #ffd9a8;
+  --scene-1: #120416;
+  --scene-2: #240a2e;
+  --scene-3: #3a1145;
+  --panel-bg: rgba(40, 10, 55, 0.45);
+  --panel-bg-strong: rgba(35, 8, 48, 0.72);
+  --panel-border: rgba(255, 255, 255, 0.12);
+  --panel-edge: rgba(255, 255, 255, 0.06);
+  --panel-shadow: rgba(0, 0, 0, 0.6);
+  --input-bg: rgba(255, 255, 255, 0.94);
+  --input-fg: #2b1338;
+  --input-border: rgba(255, 255, 255, 0.16);
+  --divider: rgba(255, 255, 255, 0.1);
+  --nav-bg: rgba(18, 4, 22, 0.65);
+  --select-arrow: #ff3fa6;
+  --sel-bg: #ff3fa6;
+  --sel-fg: #1a0420;
+  --scrollbar: #ff3fa6;
+  --scrollbar-track: rgba(255, 63, 166, 0.15);
+  --dot-color: rgba(255, 255, 255, 0.08);
+  --select-option-bg: #2a0c35;
+  --select-option-fg: #fdf3ff;
+  --ok: #34d399;
+  --err: #ff6b6b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--ink);
+  background:
+    radial-gradient(circle, var(--dot-color) 1.4px, transparent 1.4px),
+    radial-gradient(ellipse 900px 500px at 12% -8%, color-mix(in srgb, var(--gold) 20%, transparent) 0%, transparent 60%),
+    radial-gradient(ellipse 800px 600px at 100% 0%, color-mix(in srgb, var(--accent) 26%, transparent) 0%, transparent 55%),
+    radial-gradient(ellipse 700px 500px at 50% 100%, color-mix(in srgb, var(--accent-deep) 24%, transparent) 0%, transparent 55%),
+    linear-gradient(175deg, var(--scene-1) 0%, var(--scene-2) 55%, var(--scene-3) 100%);
+  background-size: 24px 24px, auto, auto, auto, auto;
+  background-attachment: fixed;
+  min-height: 100vh;
+  transition: background 0.4s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--sel-bg);
+  color: var(--sel-fg);
+}
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+html {
+  scrollbar-color: var(--scrollbar) var(--scrollbar-track);
+}
+
+:focus-visible {
+  outline: 2.5px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Form fields always sit on a light surface (var(--input-bg)) even in dark
+   theme, so their typed text needs its own dark foreground instead of the
+   page's light --ink. The [data-theme] attribute selector outweighs the
+   .text-ink utility class so this reliably wins the cascade. */
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  color: var(--input-fg);
+}
+:root[data-theme="dark"] input::placeholder,
+:root[data-theme="dark"] textarea::placeholder {
+  color: var(--ink-faint);
+  opacity: 0.7;
+}
+
+
+/* ---------- Glass panel ---------- */
+.panel {
+  background: var(--panel-bg);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid var(--panel-border);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px -20px var(--panel-shadow), inset 0 1px 0 var(--panel-edge);
+  position: relative;
+}
+
+/* ---------- Text reveal (hero headline) ---------- */
+.reveal-line {
+  overflow: hidden;
+  display: block;
+}
+.reveal-line > span {
+  display: block;
+  transform: translateY(112%);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-line.in > span {
+  transform: translateY(0);
+}
+
+/* ---------- Shine sweep (hero headline): a light band travels left-to-right
+   across the text, clipped to the glyphs via background-clip. Runs after the
+   reveal-line entrance settles; --shine-base sets the resting text color so
+   the sweep reads as a highlight rather than a generic white shimmer.
+   Two lines, one relay: line 1 sweeps, then line 2 sweeps right after (never
+   both at once), continuously, at constant (linear) speed so it never stalls
+   mid-line the way ease-in-out did. */
+@keyframes shine-sweep-line1 {
+  0% {
+    background-position: 200% 0;
+  }
+  45%, 100% {
+    background-position: -60% 0;
+  }
+}
+@keyframes shine-sweep-line2 {
+  0%, 50% {
+    background-position: 200% 0;
+  }
+  95%, 100% {
+    background-position: -60% 0;
+  }
+}
+.shine-text {
+  --shine-base: var(--ink);
+  background-image: linear-gradient(
+    100deg,
+    var(--shine-base) 35%,
+    var(--shine-base) 45%,
+    var(--gold-glow) 50%,
+    var(--shine-base) 55%,
+    var(--shine-base) 100%
+  );
+  background-size: 260% 100%;
+  background-position: 200% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.shine-text.shine-line1 {
+  animation: shine-sweep-line1 4s linear infinite;
+}
+.shine-text.shine-line2 {
+  animation: shine-sweep-line2 4s linear infinite;
+}
+.shine-text.shine-accent {
+  --shine-base: var(--accent);
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fade-up.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Scroll reveal (sections) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Theme toggle icon cross-fade ---------- */
+.icon-sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+.icon-moon {
+  opacity: 0;
+  transform: rotate(-70deg) scale(0.5);
+}
+:root[data-theme="dark"] .icon-sun {
+  opacity: 0;
+  transform: rotate(70deg) scale(0.5);
+}
+:root[data-theme="dark"] .icon-moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+.theme-icon {
+  position: absolute;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+
+/* ---------- Erase button: on click, the label (icon + text together) wipes
+   away left-to-right like it's being erased, sliding out as it disappears.
+   Only once it's fully erased (transition end) does the caller navigate /
+   advance the step — both RegisterForm.tsx and About.tsx already gate their
+   action on a timeout matching this transition's duration, so the JS needs
+   no change, just this visual. Triggered by a JS-toggled .is-wiping class. ---------- */
+.wipe-btn {
+  position: relative;
+  overflow: hidden;
+}
+.wipe-label {
+  display: inline-flex;
+  align-items: center;
+  clip-path: inset(0 0 0 0%);
+  filter: blur(0px);
+  opacity: 1;
+  transition: clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.5s ease, opacity 0.5s ease;
+}
+.wipe-btn.is-wiping .wipe-label {
+  clip-path: inset(0 0 0 100%);
+  transform: translateX(14px);
+  filter: blur(5px);
+  opacity: 0;
+}
+
+/* ---------- Form select arrow (theme-aware) ---------- */
+.themed-select {
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1L6 6L11 1' stroke='%237b1fb0' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+:root[data-theme="dark"] .themed-select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1L6 6L11 1' stroke='%23ff3fa6' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+
+/* Native <option> popup ignores our translucent panel colors (OS-rendered,
+   ignores backdrop-filter/alpha) — give it opaque theme-matched colors directly. */
+.themed-select option {
+  background-color: var(--select-option-bg);
+  color: var(--select-option-fg);
+}
+
+/* ---------- Value-card icons: slow idle float, paused on hover ---------- */
+@keyframes icon-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+.icon-float {
+  animation: icon-float 3.2s ease-in-out infinite;
+}
+.group:hover .icon-float {
+  animation-play-state: paused;
+}
+
+/* ---------- Logo lockup: soft levitation ---------- */
+@keyframes float-soft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.logo-float {
+  animation: float-soft 4.6s ease-in-out infinite;
+}
+.logo-float-delay {
+  animation-delay: 0.9s;
+}
+
+/* ---------- Registration success icon: pop-in, idle float, drawn check, pulse rings ---------- */
+@keyframes success-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.success-icon {
+  animation: success-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes success-check-draw {
+  from {
+    stroke-dashoffset: 26;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.success-check {
+  stroke-dasharray: 26;
+  stroke-dashoffset: 26;
+  animation: success-check-draw 0.4s ease-out 0.35s forwards;
+}
+@keyframes success-ring-pulse {
+  0% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+.success-ring {
+  animation: success-ring-pulse 1.8s ease-out 0.5s infinite;
+}
+.success-ring-delay {
+  animation-delay: 1.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-float,
+  .logo-float,
+  .success-icon,
+  .success-ring {
+    animation: none;
+  }
+  .success-check {
+    stroke-dashoffset: 0;
+  }
+  .shine-text {
+    animation: none;
+    background-image: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: var(--shine-base);
+  }
+}
