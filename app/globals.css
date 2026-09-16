@@ -4,72 +4,133 @@
 
 :root {
   color-scheme: light;
-  --ink: #2b1338;
-  --ink-soft: #6b4a7d;
-  --ink-faint: #9a80a8;
-  --accent: #d6248a;
-  --accent-2: #ff7a3d;
-  --accent-deep: #7b1fb0;
-  --gold: #e0632a;
-  --gold-glow: #ffcfa0;
-  --scene-1: #fdf2fa;
-  --scene-2: #f8e3f4;
-  --scene-3: #f4d9ee;
-  --panel-bg: rgba(255, 255, 255, 0.6);
-  --panel-bg-strong: rgba(255, 255, 255, 0.82);
-  --panel-border: rgba(255, 255, 255, 0.75);
-  --panel-edge: rgba(43, 19, 56, 0.06);
-  --panel-shadow: rgba(123, 31, 176, 0.16);
-  --input-bg: rgba(255, 255, 255, 0.75);
-  --input-fg: #2b1338;
-  --input-border: rgba(43, 19, 56, 0.14);
-  --divider: rgba(43, 19, 56, 0.1);
-  --nav-bg: rgba(250, 225, 245, 0.6);
-  --select-arrow: #7b1fb0;
-  --sel-bg: #d6248a;
+  --navy: #22386f;
+  --teal: #0497ba;
+  --teal-soft: #86c0ce;
+  --orange: #ff7826;
+  --amber: #fbb03b;
+  --magenta: #fe9dfe;
+  --olive: #93bb21;
+  --olive-soft: #d5dd75;
+  --rose: #fac0fb;
+
+  /* ADLIM corporate brand (admin panel) — distinct from the ADLIM Partners
+     event palette above, used only by app/admin/** via the aliases below */
+  --adlim-teal: #0596ba;
+  --adlim-teal-deep: #076e88;
+  --adlim-green: #97c11d;
+  --adlim-green-light: #cfd94c;
+
+  --ink: #19203a;
+  --ink-soft: #4a5378;
+  --ink-faint: #8890ab;
+  --surface: #ffffff;
+  --surface-soft: #f4f3ef;
+  --panel-bg: #ffffff;
+  --panel-border: rgba(34, 56, 111, 0.14);
+  --panel-shadow: rgba(34, 56, 111, 0.16);
+  --input-bg: #ffffff;
+  --input-fg: #19203a;
+  --input-border: rgba(34, 56, 111, 0.2);
+  --divider: rgba(34, 56, 111, 0.12);
+  --nav-bg: #ffffff;
+  --select-arrow: #22386f;
+  --sel-bg: #ff7826;
   --sel-fg: #ffffff;
-  --scrollbar: #d6248a;
-  --scrollbar-track: rgba(214, 36, 138, 0.12);
-  --ok: #187a48;
-  --err: #b23a2e;
-  --dot-color: rgba(43, 19, 56, 0.1);
+  --scrollbar: #22386f;
+  --scrollbar-track: rgba(34, 56, 111, 0.12);
+  --ok: #1f8a5f;
+  --err: #d64545;
+  --dot-color: rgba(34, 56, 111, 0.08);
   --select-option-bg: #ffffff;
-  --select-option-fg: #2b1338;
+  --select-option-fg: #19203a;
+
+  /* one continuous wash for the whole page (Hero through Pricing) — no per-section seams */
+  --page-wash:
+    radial-gradient(circle, var(--dot-color) 1.4px, transparent 1.4px),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--rose) 40%, white) 0%,
+      color-mix(in srgb, var(--teal-soft) 32%, white) 16%,
+      var(--surface) 30%,
+      var(--surface) 42%,
+      color-mix(in srgb, var(--olive-soft) 32%, white) 55%,
+      var(--surface) 68%,
+      color-mix(in srgb, var(--teal-soft) 22%, white) 82%,
+      color-mix(in srgb, var(--orange) 26%, white) 94%,
+      var(--surface) 100%
+    );
+  --page-wash-size: 24px 24px, 100% 100%;
+
+  /* admin panel palette — real ADLIM (corporate) brand colors, not the event's ADLIM Partners palette */
+  --accent: var(--adlim-teal);
+  --accent-2: var(--adlim-green);
+  --accent-deep: var(--adlim-teal-deep);
+  --gold: var(--adlim-green);
+  --gold-glow: var(--adlim-green-light);
+
+  /* navy used as a foreground/accent color (e.g. Agenda's "cierre" swatch) reads
+     fine on light panels but collapses into dark panels/surfaces, which are
+     navy themselves — flip it to a light swatch in dark mode (see dark block). */
+  --navy-fg: var(--navy);
+
+  /* soft ADLIM teal→green wash for the admin panel background */
+  --admin-wash: radial-gradient(circle, var(--dot-color) 1.4px, transparent 1.4px),
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--adlim-teal) 12%, var(--surface)) 0%,
+      var(--surface) 45%,
+      color-mix(in srgb, var(--adlim-green) 12%, var(--surface)) 100%
+    );
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --ink: #fdf3ff;
-  --ink-soft: #dfc2ea;
-  --ink-faint: #b18ec2;
-  --accent: #ff3fa6;
-  --accent-2: #ff7a3d;
-  --accent-deep: #7b1fb0;
-  --gold: #ff9142;
-  --gold-glow: #ffd9a8;
-  --scene-1: #120416;
-  --scene-2: #240a2e;
-  --scene-3: #3a1145;
-  --panel-bg: rgba(40, 10, 55, 0.45);
-  --panel-bg-strong: rgba(35, 8, 48, 0.72);
-  --panel-border: rgba(255, 255, 255, 0.12);
-  --panel-edge: rgba(255, 255, 255, 0.06);
-  --panel-shadow: rgba(0, 0, 0, 0.6);
-  --input-bg: rgba(255, 255, 255, 0.94);
-  --input-fg: #2b1338;
-  --input-border: rgba(255, 255, 255, 0.16);
-  --divider: rgba(255, 255, 255, 0.1);
-  --nav-bg: rgba(18, 4, 22, 0.65);
-  --select-arrow: #ff3fa6;
-  --sel-bg: #ff3fa6;
-  --sel-fg: #1a0420;
-  --scrollbar: #ff3fa6;
-  --scrollbar-track: rgba(255, 63, 166, 0.15);
+  --ink: #ffffff;
+  --ink-soft: #c7cee6;
+  --ink-faint: #92a0c9;
+  --surface: #1b2d5c;
+  --surface-soft: #22386f;
+  --panel-bg: #22386f;
+  --panel-border: rgba(255, 255, 255, 0.4);
+  --panel-shadow: rgba(0, 0, 0, 0.4);
+  --input-bg: #ffffff;
+  --input-fg: #19203a;
+  --input-border: rgba(255, 255, 255, 0.2);
+  --divider: rgba(255, 255, 255, 0.14);
+  --nav-bg: #1b2d5c;
+  --select-arrow: #86c0ce;
+  --sel-bg: #ff7826;
+  --sel-fg: #ffffff;
+  --scrollbar: #86c0ce;
+  --scrollbar-track: rgba(255, 255, 255, 0.12);
   --dot-color: rgba(255, 255, 255, 0.08);
-  --select-option-bg: #2a0c35;
-  --select-option-fg: #fdf3ff;
-  --ok: #34d399;
-  --err: #ff6b6b;
+  --select-option-bg: #22386f;
+  --select-option-fg: #ffffff;
+  --ok: #7fd9ac;
+  --err: #ff8a8a;
+  --navy-fg: var(--teal-soft);
+
+  --admin-wash: radial-gradient(circle, var(--dot-color) 1.4px, transparent 1.4px),
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--adlim-teal) 20%, var(--surface)) 0%,
+      var(--surface) 45%,
+      color-mix(in srgb, var(--adlim-green) 16%, var(--surface)) 100%
+    );
+
+  --page-wash:
+    radial-gradient(circle, var(--dot-color) 1.4px, transparent 1.4px),
+    linear-gradient(
+      180deg,
+      var(--navy) 0%,
+      color-mix(in srgb, var(--teal) 22%, var(--navy)) 20%,
+      var(--navy) 40%,
+      color-mix(in srgb, var(--olive) 16%, var(--navy)) 58%,
+      var(--navy) 76%,
+      color-mix(in srgb, var(--orange) 18%, var(--navy)) 92%,
+      var(--navy) 100%
+    );
 }
 
 * {
@@ -82,16 +143,9 @@ html {
 
 body {
   color: var(--ink);
-  background:
-    radial-gradient(circle, var(--dot-color) 1.4px, transparent 1.4px),
-    radial-gradient(ellipse 900px 500px at 12% -8%, color-mix(in srgb, var(--gold) 20%, transparent) 0%, transparent 60%),
-    radial-gradient(ellipse 800px 600px at 100% 0%, color-mix(in srgb, var(--accent) 26%, transparent) 0%, transparent 55%),
-    radial-gradient(ellipse 700px 500px at 50% 100%, color-mix(in srgb, var(--accent-deep) 24%, transparent) 0%, transparent 55%),
-    linear-gradient(175deg, var(--scene-1) 0%, var(--scene-2) 55%, var(--scene-3) 100%);
-  background-size: 24px 24px, auto, auto, auto, auto;
-  background-attachment: fixed;
+  background: var(--surface);
   min-height: 100vh;
-  transition: background 0.4s ease, color 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -117,12 +171,11 @@ html {
 }
 
 :focus-visible {
-  outline: 2.5px solid var(--accent);
+  outline: 2.5px solid var(--orange);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
-/* Form fields always sit on a light surface (var(--input-bg)) even in dark
+/* Form fields always sit on a white surface (var(--input-bg)) even in dark
    theme, so their typed text needs its own dark foreground instead of the
    page's light --ink. The [data-theme] attribute selector outweighs the
    .text-ink utility class so this reliably wins the cascade. */
@@ -133,20 +186,51 @@ html {
 }
 :root[data-theme="dark"] input::placeholder,
 :root[data-theme="dark"] textarea::placeholder {
-  color: var(--ink-faint);
-  opacity: 0.7;
+  /* input-fg (not ink-faint): the field itself stays white in dark mode too,
+     so its placeholder needs the same dark foreground as the typed text —
+     ink-faint is tuned for light text on dark surfaces and nearly disappears
+     here (was ~1.6:1 against the white field). */
+  color: var(--input-fg);
+  opacity: 0.55;
 }
 
-
-/* ---------- Glass panel ---------- */
+/* ---------- Flat panel (brand is flat — no glass/blur) ---------- */
 .panel {
   background: var(--panel-bg);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  backdrop-filter: blur(22px) saturate(150%);
   border: 1px solid var(--panel-border);
   border-radius: 24px;
-  box-shadow: 0 24px 60px -20px var(--panel-shadow), inset 0 1px 0 var(--panel-edge);
+  box-shadow: 0 20px 44px -22px var(--panel-shadow);
   position: relative;
+}
+
+/* ---------- Shine sweep (hero headline): a soft light band travels once
+   left-to-right across the text, clipped to the glyphs via background-clip.
+   Purely a moving highlight — never reflows layout. Starts at the phrase's
+   own start and finishes past its end, then idles. ---------- */
+@keyframes shine-sweep {
+  0% {
+    background-position: 200% 0;
+  }
+  55%, 100% {
+    background-position: -60% 0;
+  }
+}
+.shine-text {
+  --shine-base: var(--ink);
+  background-image: linear-gradient(
+    100deg,
+    var(--shine-base) 35%,
+    var(--shine-base) 45%,
+    var(--orange) 50%,
+    var(--shine-base) 55%,
+    var(--shine-base) 100%
+  );
+  background-size: 260% 100%;
+  background-position: 200% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine-sweep 2.4s cubic-bezier(0.4, 0, 0.2, 1) 0.9s 1 forwards;
 }
 
 /* ---------- Text reveal (hero headline) ---------- */
@@ -161,55 +245,6 @@ html {
 }
 .reveal-line.in > span {
   transform: translateY(0);
-}
-
-/* ---------- Shine sweep (hero headline): a light band travels left-to-right
-   across the text, clipped to the glyphs via background-clip. Runs after the
-   reveal-line entrance settles; --shine-base sets the resting text color so
-   the sweep reads as a highlight rather than a generic white shimmer.
-   Two lines, one relay: line 1 sweeps, then line 2 sweeps right after (never
-   both at once), continuously, at constant (linear) speed so it never stalls
-   mid-line the way ease-in-out did. */
-@keyframes shine-sweep-line1 {
-  0% {
-    background-position: 200% 0;
-  }
-  45%, 100% {
-    background-position: -60% 0;
-  }
-}
-@keyframes shine-sweep-line2 {
-  0%, 50% {
-    background-position: 200% 0;
-  }
-  95%, 100% {
-    background-position: -60% 0;
-  }
-}
-.shine-text {
-  --shine-base: var(--ink);
-  background-image: linear-gradient(
-    100deg,
-    var(--shine-base) 35%,
-    var(--shine-base) 45%,
-    var(--gold-glow) 50%,
-    var(--shine-base) 55%,
-    var(--shine-base) 100%
-  );
-  background-size: 260% 100%;
-  background-position: 200% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.shine-text.shine-line1 {
-  animation: shine-sweep-line1 4s linear infinite;
-}
-.shine-text.shine-line2 {
-  animation: shine-sweep-line2 4s linear infinite;
-}
-.shine-text.shine-accent {
-  --shine-base: var(--accent);
 }
 
 .fade-up {
@@ -288,14 +323,14 @@ html {
   padding-right: 36px;
   appearance: none;
   -webkit-appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1L6 6L11 1' stroke='%237b1fb0' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-}
-:root[data-theme="dark"] .themed-select {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1L6 6L11 1' stroke='%23ff3fa6' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  /* The <select> itself always sits on the fixed-white input-bg (see the
+     dark-theme input/select/textarea override above), so the arrow needs the
+     same always-dark stroke in both themes — no dark-mode override here.
+     A previous teal-soft dark variant rendered at ~2:1 against the white field. */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1L6 6L11 1' stroke='%2322386f' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
 }
 
-/* Native <option> popup ignores our translucent panel colors (OS-rendered,
-   ignores backdrop-filter/alpha) — give it opaque theme-matched colors directly. */
+/* Native <option> popup ignores our theme colors set via class (OS-rendered) — give it opaque theme-matched colors directly. */
 .themed-select option {
   background-color: var(--select-option-bg);
   color: var(--select-option-fg);
@@ -315,22 +350,6 @@ html {
 }
 .group:hover .icon-float {
   animation-play-state: paused;
-}
-
-/* ---------- Logo lockup: soft levitation ---------- */
-@keyframes float-soft {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-.logo-float {
-  animation: float-soft 4.6s ease-in-out infinite;
-}
-.logo-float-delay {
-  animation-delay: 0.9s;
 }
 
 /* ---------- Registration success icon: pop-in, idle float, drawn check, pulse rings ---------- */
@@ -380,12 +399,32 @@ html {
   animation-delay: 1.4s;
 }
 
+/* ---------- Hero backdrop shape behind the doctor photo ---------- */
+@keyframes blob-drift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-2%, 2%) scale(1.03);
+  }
+}
+.hero-blob {
+  animation: blob-drift 12s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .icon-float,
-  .logo-float,
   .success-icon,
-  .success-ring {
+  .success-ring,
+  .hero-blob {
     animation: none;
+  }
+  .reveal,
+  .fade-up,
+  .reveal-line > span {
+    transition: none;
+    opacity: 1;
+    transform: none;
   }
   .success-check {
     stroke-dashoffset: 0;
@@ -395,6 +434,6 @@ html {
     background-image: none;
     -webkit-background-clip: unset;
     background-clip: unset;
-    color: var(--shine-base);
+    color: var(--shine-base, currentColor);
   }
 }

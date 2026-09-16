@@ -12,6 +12,18 @@ const PARTICIPACION_OPTIONS: Array<{ value: TipoParticipacion; label: string; de
   { value: "live-observer", label: "Live Observer", desc: "Transmisión audiovisual" },
 ];
 
+const ESPECIALIDAD_OPTIONS = [
+  "Ginecología Estética y Regenerativa",
+  "Ginecología y Obstetricia",
+  "Cirugía Plástica y Reconstructiva",
+  "Medicina Estética",
+  "Dermatología",
+  "Urología",
+  "Medicina General",
+  "Enfermería",
+  "Otro",
+];
+
 type Status = "idle" | "sending" | "error";
 type Phase = "idle" | "exiting" | "entering";
 
@@ -22,7 +34,7 @@ const STEPS = [
 ] as const;
 
 const inputClass =
-  "w-full rounded-xl border border-input-border bg-input-bg px-3.5 py-[13.5px] text-[14.5px] text-ink placeholder:text-ink-faint transition-colors duration-150 hover:border-[color-mix(in_srgb,var(--accent)_55%,var(--input-border))] focus:border-accent focus:outline-none focus:shadow-[0_0_0_4px_color-mix(in_srgb,var(--accent)_16%,transparent)]";
+  "w-full rounded-full border border-input-border bg-input-bg px-5 py-[13.5px] text-[14.5px] text-ink placeholder:text-ink-faint transition-colors duration-150 hover:border-[color-mix(in_srgb,var(--navy)_55%,var(--input-border))] focus:border-navy focus:outline-none focus:shadow-[0_0_0_4px_color-mix(in_srgb,var(--navy)_14%,transparent)]";
 const labelClass = "mb-1.5 block text-[12.5px] font-bold text-ink";
 
 function buildWhatsappMessage(data: {
@@ -31,8 +43,8 @@ function buildWhatsappMessage(data: {
   especialidad: string;
   tipoParticipacion: TipoParticipacion;
   usaRf: boolean;
-  pais: string;
-  telefono: string;
+  whatsapp: string;
+  telefonoOpcional: string;
   email: string;
 }) {
   const tipoLabel = data.tipoParticipacion === "hands-on" ? "Hands-On (práctica quirúrgica)" : "Live Observer (transmisión audiovisual)";
@@ -40,10 +52,10 @@ function buildWhatsappMessage(data: {
     `Hola, soy *${data.nombres} ${data.apellido}* y quiero inscribirme al curso *Técnicas Avanzadas de Cirugía Estética Genital Femenina - Sistema FRAXX* (12 nov., Lima - Perú).`,
     "",
     `Especialidad: ${data.especialidad}`,
-    `País: ${data.pais}`,
     `Tipo de participación: ${tipoLabel}`,
     `¿Uso equipos de RF?: ${data.usaRf ? "Sí" : "No"}`,
-    `Teléfono: ${data.telefono}`,
+    `WhatsApp: ${data.whatsapp}`,
+    ...(data.telefonoOpcional ? [`Teléfono: ${data.telefonoOpcional}`] : []),
     `Email: ${data.email}`,
     "",
     "Quedo atento(a) a las indicaciones para procesar mi pago.",
@@ -51,20 +63,26 @@ function buildWhatsappMessage(data: {
   return lines.join("\n");
 }
 
-export default function RegisterForm() {
+export default function RegisterForm({
+  defaultTipoParticipacion,
+}: {
+  defaultTipoParticipacion?: TipoParticipacion;
+} = {}) {
   const formRef = useRef<HTMLFormElement>(null);
   const [stepIndex, setStepIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>("idle");
   const [status, setStatus] = useState<Status>("idle");
   const [submitted, setSubmitted] = useState(false);
   const [waLink, setWaLink] = useState<string>("");
+  const [choice, setChoice] = useState<"none" | "whatsapp" | "wait">("none");
+  const [especialidadOtro, setEspecialidadOtro] = useState(false);
 
   const isLastStep = stepIndex === STEPS.length - 1;
 
   function fieldsForStep(step: number): string[] {
     if (step === 0) return ["nombres", "apellido", "especialidad"];
     if (step === 1) return ["tipo_participacion", "usa_rf"];
-    return ["pais", "telefono", "email"];
+    return ["whatsapp", "email"];
   }
 
   function validateStep(step: number): boolean {
@@ -117,7 +135,7 @@ export default function RegisterForm() {
     const form = formRef.current;
     if (!form) return;
 
-    const honeypot = (form.elements.namedItem("campo_extra") as HTMLInputElement).value;
+    const honeypot = (form.elements.namedItem("campo_extra") as HTMLInputElement).checked;
     if (honeypot) return;
 
     if (!validateStep(stepIndex)) return;
@@ -129,8 +147,8 @@ export default function RegisterForm() {
       especialidad: String(data.get("especialidad") || "").trim(),
       tipoParticipacion: (String(data.get("tipo_participacion") || "hands-on")) as TipoParticipacion,
       usaRf: String(data.get("usa_rf") || "") === "si",
-      pais: String(data.get("pais") || "").trim(),
-      telefono: String(data.get("telefono") || "").trim(),
+      whatsapp: String(data.get("whatsapp") || "").trim(),
+      telefonoOpcional: String(data.get("telefono_opcional") || "").trim(),
       email: String(data.get("email") || "").trim(),
     };
 
@@ -142,8 +160,8 @@ export default function RegisterForm() {
       especialidad: payload.especialidad,
       tipo_participacion: payload.tipoParticipacion,
       usa_rf: payload.usaRf,
-      pais: payload.pais,
-      telefono: payload.telefono,
+      pais: "",
+      telefono: payload.whatsapp,
       email: payload.email,
       origen: "landing-webinar-fraxx",
     });
@@ -157,8 +175,6 @@ export default function RegisterForm() {
     const message = buildWhatsappMessage(payload);
     const link = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     setWaLink(link);
-    window.open(link, "_blank", "noopener");
-
     setSubmitted(true);
   }
 
@@ -173,9 +189,9 @@ export default function RegisterForm() {
     return (
       <div className="px-2 py-4 text-center">
         <div className="relative mx-auto mb-[18px] flex h-16 w-16 items-center justify-center">
-          <span className="success-ring absolute inset-0 rounded-full border-2 border-accent" />
-          <span className="success-ring success-ring-delay absolute inset-0 rounded-full border-2 border-accent" />
-          <div className="success-icon relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-2 shadow-[0_12px_26px_-8px_rgba(255,63,166,0.5)]">
+          <span className="success-ring absolute inset-0 rounded-full border-2 border-orange" />
+          <span className="success-ring success-ring-delay absolute inset-0 rounded-full border-2 border-orange" />
+          <div className="success-icon relative flex h-16 w-16 items-center justify-center rounded-full bg-orange shadow-[0_12px_26px_-8px_rgba(255,120,38,0.5)]">
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
               <path
                 className="success-check"
@@ -189,19 +205,49 @@ export default function RegisterForm() {
           </div>
         </div>
         <h3 className="mb-2 font-display text-[21px] font-bold text-ink">¡Registro recibido!</h3>
-        <p className="mb-5 text-sm leading-[22px] text-ink-soft">
-          Abrimos WhatsApp con tus datos para que coordines el pago de tu cupo. Si no se abrió
-          automáticamente, usa el botón de abajo.
-        </p>
-        <a
-          href={waLink}
-          target="_blank"
-          rel="noopener"
-          className="inline-flex w-full items-center justify-center gap-2.5 rounded-[14px] bg-gradient-to-br from-accent to-accent-deep px-8 py-[15px] text-[14px] font-bold uppercase tracking-wide text-white shadow-[0_14px_30px_-10px_rgba(255,63,166,0.5)] transition-transform duration-200 hover:-translate-y-0.5"
-        >
-          <MessageCircle className="h-[18px] w-[18px]" strokeWidth={2.2} />
-          Abrir WhatsApp
-        </a>
+
+        {choice === "none" && (
+          <>
+            <p className="mb-5 text-sm leading-[22px] text-ink-soft">
+              Ya enviamos tus datos de inscripción. Para procesar tu pago puedes{" "}
+              <b className="font-bold text-ink">escribirnos ahora por WhatsApp</b>, o esperar a que el
+              equipo de ADLIM Partners se contacte contigo para confirmar los datos y coordinar el
+              proceso de pago.
+            </p>
+            <div className="flex flex-col gap-3">
+              <a
+                href={waLink}
+                target="_blank"
+                rel="noopener"
+                onClick={() => setChoice("whatsapp")}
+                className="inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-orange px-8 py-[15px] text-[14px] font-bold uppercase tracking-wide text-white shadow-[0_14px_30px_-10px_rgba(255,120,38,0.5)] transition-transform duration-200 hover:-translate-y-0.5"
+              >
+                <MessageCircle className="h-[18px] w-[18px]" strokeWidth={2.2} />
+                Enviar mensaje por WhatsApp
+              </a>
+              <button
+                type="button"
+                onClick={() => setChoice("wait")}
+                className="w-full rounded-full border border-panel-border bg-panel px-8 py-3 text-[13.5px] font-bold text-ink-soft transition-colors hover:bg-panel-strong hover:text-ink"
+              >
+                Prefiero que me contacten
+              </button>
+            </div>
+          </>
+        )}
+
+        {choice === "whatsapp" && (
+          <p className="text-sm leading-[22px] text-ink-soft">
+            Perfecto, quedamos atentos a tu mensaje por WhatsApp para coordinar el pago de tu cupo.
+          </p>
+        )}
+
+        {choice === "wait" && (
+          <p className="text-sm leading-[22px] text-ink-soft">
+            Listo. El equipo de ADLIM Partners se contactará contigo para confirmar tus datos e indicarte
+            el proceso de pago.
+          </p>
+        )}
       </div>
     );
   }
@@ -214,7 +260,7 @@ export default function RegisterForm() {
           <div key={step.key} className="flex flex-1 flex-col gap-2">
             <div
               className={`h-1.5 rounded-full transition-colors duration-500 ${
-                i <= stepIndex ? "bg-accent" : "bg-divider"
+                i <= stepIndex ? "bg-orange" : "bg-divider"
               }`}
             />
             <span
@@ -236,12 +282,11 @@ export default function RegisterForm() {
           transitionTimingFunction: "cubic-bezier(.16,1,.3,1)",
         }}
       >
-        {stepIndex === 0 && (
-          <>
+        <div hidden={stepIndex !== 0}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="mb-[18px]">
                 <label htmlFor="nombres" className={labelClass}>
-                  Nombres *
+                  Nombres <span className="text-orange">*</span>
                 </label>
                 <input
                   id="nombres"
@@ -255,7 +300,7 @@ export default function RegisterForm() {
               </div>
               <div className="mb-[18px]">
                 <label htmlFor="apellido" className={labelClass}>
-                  Apellido *
+                  Apellido <span className="text-orange">*</span>
                 </label>
                 <input
                   id="apellido"
@@ -270,36 +315,57 @@ export default function RegisterForm() {
             </div>
             <div className="mb-[18px]">
               <label htmlFor="especialidad" className={labelClass}>
-                Especialidad / Profesión *
+                Especialidad / Profesión <span className="text-orange">*</span>
               </label>
-              <input
-                id="especialidad"
-                name="especialidad"
-                type="text"
-                required
-                placeholder="Ej. Ginecología Estética"
-                className={inputClass}
-              />
+              {especialidadOtro ? (
+                <input
+                  id="especialidad"
+                  name="especialidad"
+                  type="text"
+                  required
+                  autoFocus
+                  placeholder="Escribe tu especialidad"
+                  className={inputClass}
+                />
+              ) : (
+                <select
+                  id="especialidad"
+                  name="especialidad"
+                  required
+                  defaultValue=""
+                  onChange={(e) => {
+                    if (e.target.value === "Otro") setEspecialidadOtro(true);
+                  }}
+                  className={`themed-select ${inputClass}`}
+                >
+                  <option value="" disabled>
+                    Selecciona una opción
+                  </option>
+                  {ESPECIALIDAD_OPTIONS.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
-          </>
-        )}
+        </div>
 
-        {stepIndex === 1 && (
-          <>
+        <div hidden={stepIndex !== 1}>
             <div className="mb-[18px]">
               <label className={labelClass}>Tipo de participación *</label>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {PARTICIPACION_OPTIONS.map((opt) => (
                   <label
                     key={opt.value}
-                    className="flex cursor-pointer flex-col rounded-xl border border-input-border bg-input-bg px-4 py-3 transition-colors has-[:checked]:border-accent has-[:checked]:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent)_18%,transparent)]"
+                    className="flex cursor-pointer flex-col rounded-xl border border-input-border bg-input-bg px-4 py-3 transition-colors has-[:checked]:border-navy has-[:checked]:shadow-[0_0_0_3px_color-mix(in_srgb,var(--navy)_14%,transparent)]"
                   >
                     <input
                       type="radio"
                       name="tipo_participacion"
                       value={opt.value}
                       required
-                      defaultChecked={opt.value === "hands-on"}
+                      defaultChecked={opt.value === (defaultTipoParticipacion ?? "hands-on")}
                       className="sr-only"
                     />
                     <span className="text-[13.5px] font-bold text-ink">{opt.label}</span>
@@ -310,7 +376,7 @@ export default function RegisterForm() {
             </div>
             <div className="mb-[18px]">
               <label htmlFor="usa_rf" className={labelClass}>
-                ¿Usas equipos de radiofrecuencia (RF)? *
+                ¿Usas equipos de radiofrecuencia (RF)? <span className="text-orange">*</span>
               </label>
               <select id="usa_rf" name="usa_rf" required defaultValue="" className={`themed-select ${inputClass}`}>
                 <option value="" disabled>
@@ -323,42 +389,55 @@ export default function RegisterForm() {
                 Los usuarios de equipos de RF acceden a un precio especial.
               </p>
             </div>
-          </>
-        )}
+        </div>
 
-        {stepIndex === 2 && (
-          <>
-            <div className="mb-[18px]">
-              <label htmlFor="pais" className={labelClass}>
-                País *
-              </label>
-              <input
-                id="pais"
-                name="pais"
-                type="text"
-                required
-                autoComplete="country-name"
-                placeholder="Ej. Perú"
-                className={inputClass}
-              />
-            </div>
-            <div className="mb-[18px]">
-              <label htmlFor="telefono" className={labelClass}>
-                WhatsApp / Teléfono *
-              </label>
-              <input
-                id="telefono"
-                name="telefono"
-                type="tel"
-                required
-                autoComplete="tel"
-                placeholder="Ej. 987 654 321"
-                className={inputClass}
-              />
+        <div hidden={stepIndex !== 2}>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="mb-[18px]">
+                <label htmlFor="whatsapp" className={labelClass}>
+                  WhatsApp <span className="text-orange">*</span>
+                </label>
+                <input
+                  id="whatsapp"
+                  name="whatsapp"
+                  type="tel"
+                  required
+                  autoComplete="tel"
+                  inputMode="numeric"
+                  pattern="[0-9]{9}"
+                  maxLength={9}
+                  title="9 dígitos"
+                  placeholder="Ej. 987654321"
+                  onInput={(e) => {
+                    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 9);
+                  }}
+                  className={inputClass}
+                />
+              </div>
+              <div className="mb-[18px]">
+                <label htmlFor="telefono_opcional" className={labelClass}>
+                  Teléfono
+                </label>
+                <input
+                  id="telefono_opcional"
+                  name="telefono_opcional"
+                  type="tel"
+                  autoComplete="tel"
+                  inputMode="numeric"
+                  pattern="[0-9]{9}"
+                  maxLength={9}
+                  title="9 dígitos"
+                  placeholder="Ej. 012345678"
+                  onInput={(e) => {
+                    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 9);
+                  }}
+                  className={inputClass}
+                />
+              </div>
             </div>
             <div className="mb-[18px]">
               <label htmlFor="email" className={labelClass}>
-                Correo electrónico *
+                Correo electrónico <span className="text-orange">*</span>
               </label>
               <input
                 id="email"
@@ -370,16 +449,16 @@ export default function RegisterForm() {
                 className={inputClass}
               />
             </div>
-          </>
-        )}
+        </div>
       </div>
 
       <input
-        type="text"
+        type="checkbox"
         name="campo_extra"
         id="campo_extra"
         style={{ position: "absolute", left: "-9999px" }}
         tabIndex={-1}
+        aria-hidden="true"
         autoComplete="off"
       />
 
@@ -387,13 +466,13 @@ export default function RegisterForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className={`wipe-btn flex items-center justify-center gap-2.5 rounded-[14px] bg-gradient-to-br from-accent to-accent-deep px-8 py-[17px] text-[14.5px] font-bold uppercase tracking-wide text-white shadow-[0_14px_30px_-10px_rgba(255,63,166,0.5)] transition-transform duration-200 [transition-timing-function:cubic-bezier(.16,1,.3,1)] hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 ${
+          className={`wipe-btn flex items-center justify-center gap-2.5 rounded-full bg-orange px-8 py-[17px] text-[14.5px] font-bold uppercase tracking-wide text-white shadow-[0_14px_30px_-10px_rgba(255,120,38,0.5)] transition-transform duration-200 [transition-timing-function:cubic-bezier(.16,1,.3,1)] hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 ${
             phase === "exiting" ? "is-wiping" : ""
           }`}
         >
           <span className="wipe-label gap-2.5">
             <ChevronsRight className="h-[19px] w-[19px]" strokeWidth={2.2} />
-            {status === "sending" ? "Enviando..." : isLastStep ? "Reservar y continuar por WhatsApp" : "Siguiente"}
+            {status === "sending" ? "Enviando..." : isLastStep ? "Inscribirse ahora" : "Siguiente"}
           </span>
         </button>
 
@@ -401,7 +480,7 @@ export default function RegisterForm() {
           <button
             type="button"
             onClick={goBack}
-            className="w-full rounded-[14px] border border-panel-border bg-panel px-8 py-3 text-[13.5px] font-bold text-ink-soft transition-colors hover:bg-panel-strong hover:text-ink"
+            className="w-full rounded-full border border-panel-border bg-panel px-8 py-3 text-[13.5px] font-bold text-ink-soft transition-colors hover:bg-panel-strong hover:text-ink"
           >
             Atrás
           </button>
@@ -415,7 +494,7 @@ export default function RegisterForm() {
       )}
 
       <p className="mt-4 text-[11.5px] leading-4 text-ink-faint">
-        Al registrarte aceptas que ADLIM Partners use tus datos de contacto para coordinar tu inscripción.
+        Al registrarte aceptas que ADLIM Partners use tus datos de contacto.
       </p>
     </form>
   );

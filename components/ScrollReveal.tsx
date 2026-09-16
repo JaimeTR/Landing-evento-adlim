@@ -22,10 +22,7 @@ export default function ScrollReveal({
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setInView(true);
-            io.unobserve(entry.target);
-          }
+          setInView(entry.isIntersecting);
         });
       },
       { threshold: 0.15 }

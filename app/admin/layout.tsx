@@ -29,7 +29,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen">
+    <div
+      className="min-h-screen"
+      style={{ background: "var(--admin-wash)", backgroundSize: "24px 24px, 100% 100%" }}
+    >
       <Sidebar />
       <MobileNav />
       <div className="md:pl-[240px]">{children}</div>

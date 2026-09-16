@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, Users, UserCircle, Settings, LogOut } from "lucide-react";
 import { signOut } from "@/lib/supabase/auth";
@@ -24,10 +25,8 @@ export default function Sidebar() {
 
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-[240px] flex-col border-r border-divider bg-[var(--nav-bg)] backdrop-blur-2xl backdrop-saturate-150 md:flex">
-      <div className="flex items-center border-b border-divider px-5 py-5">
-        <span className="font-display text-[15px] font-bold uppercase tracking-[1px] text-ink">
-          ADLIM <span className="text-accent">Partners</span>
-        </span>
+      <div className="flex items-center justify-center border-b border-divider px-5 py-6">
+        <Image src="/brand/adlim-logo-2024.png" alt="ADLIM" width={3871} height={996} className="h-8 w-auto" />
       </div>
 
       <nav className="flex-1 space-y-1 px-3 py-5">

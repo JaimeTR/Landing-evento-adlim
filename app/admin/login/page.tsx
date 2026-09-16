@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { signIn } from "@/lib/supabase/auth";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -28,16 +29,21 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center px-6 py-10">
+    <div
+      className="relative flex min-h-screen items-center justify-center px-6 py-10"
+      style={{ background: "var(--admin-wash)", backgroundSize: "24px 24px, 100% 100%" }}
+    >
       <div className="absolute right-6 top-6">
         <ThemeToggle />
       </div>
 
       <div className="panel w-full max-w-[420px] px-8 py-11 sm:px-10">
-        <div className="mx-auto mb-7 text-center font-display text-[20px] font-bold uppercase tracking-[1px] text-ink">
-          ADLIM <span className="text-accent">Partners</span>
+        <div className="mx-auto mb-7 flex flex-wrap items-center justify-center gap-4">
+          <Image src="/brand/adlim-logo-horizontal.png" alt="ADLIM Partners" width={3340} height={901} className="h-7 w-auto" />
+          <span className="h-6 w-px bg-divider" />
+          <Image src="/brand/adlim-logo-2024.png" alt="ADLIM" width={3871} height={996} className="h-7 w-auto" />
         </div>
-        <h1 className="mb-1.5 text-center font-display text-[22px] font-bold text-ink">Panel FRAXX</h1>
+        <h1 className="mb-1.5 text-center font-display text-[22px] font-bold text-ink">Panel de Administración</h1>
         <p className="mb-8 text-center text-[13.5px] text-ink-soft">Ingresa con tu cuenta del equipo</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -102,7 +108,10 @@ export default function AdminLoginPage() {
         <p className="mt-5 text-center text-[12.5px] text-ink-faint">
           ¿Problemas para ingresar u olvidaste tu contraseña?{" "}
           <a
-            href="https://wa.me/51914507338"
+            href={
+              "https://wa.me/51975646074?text=" +
+              encodeURIComponent("Hola, tengo problemas con el inicio de sesión / la plataforma del panel FRAXX.")
+            }
             target="_blank"
             rel="noopener"
             className="font-semibold text-accent transition-colors hover:text-accent-deep"

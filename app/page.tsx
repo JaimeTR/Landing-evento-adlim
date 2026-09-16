@@ -4,18 +4,25 @@ import About from "@/components/About";
 import Agenda from "@/components/Agenda";
 import Pricing from "@/components/Pricing";
 import Footer from "@/components/Footer";
+import SiteBackground from "@/components/SiteBackground";
+import BookingModalProvider from "@/components/BookingModalContext";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <Nav />
-      <main className="flex flex-1 flex-col justify-center gap-32 py-6">
-        <Hero />
-        <About />
-        <Agenda />
-        <Pricing />
-      </main>
-      <Footer />
-    </div>
+    <BookingModalProvider>
+      <div className="flex min-h-screen flex-col">
+        <Nav />
+        <main className="relative flex flex-1 flex-col overflow-hidden">
+          <SiteBackground />
+          <Hero />
+          <About />
+          <div className="flex flex-col gap-24 py-20 sm:gap-28">
+            <Agenda />
+            <Pricing />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    </BookingModalProvider>
   );
 }
