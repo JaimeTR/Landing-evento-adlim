@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { ChevronsRight, MessageCircle } from "lucide-react";
+import { ChevronsRight, MessageCircle, CalendarDays } from "lucide-react";
 import confetti from "canvas-confetti";
 import { insertLead, type TipoParticipacion } from "@/lib/supabase/leads";
 
@@ -43,9 +43,11 @@ function buildWhatsappMessage(data: {
   especialidad: string;
   tipoParticipacion: TipoParticipacion;
   usaRf: boolean;
+  fechaAdquisicionRf: string;
   whatsapp: string;
   telefonoOpcional: string;
   email: string;
+  ciudad: string;
 }) {
   const tipoLabel = data.tipoParticipacion === "hands-on" ? "Hands-On (práctica quirúrgica)" : "Live Observer (transmisión audiovisual)";
   const lines = [
@@ -53,10 +55,12 @@ function buildWhatsappMessage(data: {
     "",
     `Especialidad: ${data.especialidad}`,
     `Tipo de participación: ${tipoLabel}`,
-    `¿Uso equipos de RF?: ${data.usaRf ? "Sí" : "No"}`,
+    `¿Tiene equipo de radiofrecuencia Loktal?: ${data.usaRf ? "Sí" : "No"}`,
+    ...(data.usaRf && data.fechaAdquisicionRf ? [`Fecha de adquisición del equipo: ${data.fechaAdquisicionRf}`] : []),
     `WhatsApp: ${data.whatsapp}`,
     ...(data.telefonoOpcional ? [`Teléfono: ${data.telefonoOpcional}`] : []),
     `Email: ${data.email}`,
+    `Ciudad: ${data.ciudad}`,
     "",
     "Quedo atento(a) a las indicaciones para procesar mi pago.",
   ];
@@ -76,13 +80,14 @@ export default function RegisterForm({
   const [waLink, setWaLink] = useState<string>("");
   const [choice, setChoice] = useState<"none" | "whatsapp" | "wait">("none");
   const [especialidadOtro, setEspecialidadOtro] = useState(false);
+  const [usaRf, setUsaRf] = useState(false);
 
   const isLastStep = stepIndex === STEPS.length - 1;
 
   function fieldsForStep(step: number): string[] {
     if (step === 0) return ["nombres", "apellido", "especialidad"];
-    if (step === 1) return ["tipo_participacion", "usa_rf"];
-    return ["whatsapp", "email"];
+    if (step === 1) return usaRf ? ["tipo_participacion", "usa_rf", "fecha_adquisicion_rf"] : ["tipo_participacion", "usa_rf"];
+    return ["whatsapp", "email", "ciudad"];
   }
 
   function validateStep(step: number): boolean {
@@ -147,9 +152,11 @@ export default function RegisterForm({
       especialidad: String(data.get("especialidad") || "").trim(),
       tipoParticipacion: (String(data.get("tipo_participacion") || "hands-on")) as TipoParticipacion,
       usaRf: String(data.get("usa_rf") || "") === "si",
+      fechaAdquisicionRf: String(data.get("fecha_adquisicion_rf") || "").trim(),
       whatsapp: String(data.get("whatsapp") || "").trim(),
       telefonoOpcional: String(data.get("telefono_opcional") || "").trim(),
       email: String(data.get("email") || "").trim(),
+      ciudad: String(data.get("ciudad") || "").trim(),
     };
 
     setStatus("sending");
@@ -160,7 +167,7 @@ export default function RegisterForm({
       especialidad: payload.especialidad,
       tipo_participacion: payload.tipoParticipacion,
       usa_rf: payload.usaRf,
-      pais: "",
+      pais: payload.ciudad,
       telefono: payload.whatsapp,
       email: payload.email,
       origen: "landing-webinar-fraxx",
@@ -376,9 +383,16 @@ export default function RegisterForm({
             </div>
             <div className="mb-[18px]">
               <label htmlFor="usa_rf" className={labelClass}>
-                ¿Usas equipos de radiofrecuencia (RF)? <span className="text-orange">*</span>
+                ¿Tiene tu equipo de radiofrecuencia de marca Loktal? <span className="text-orange">*</span>
               </label>
-              <select id="usa_rf" name="usa_rf" required defaultValue="" className={`themed-select ${inputClass}`}>
+              <select
+                id="usa_rf"
+                name="usa_rf"
+                required
+                defaultValue=""
+                onChange={(e) => setUsaRf(e.target.value === "si")}
+                className={`themed-select ${inputClass}`}
+              >
                 <option value="" disabled>
                   Selecciona una opción
                 </option>
@@ -388,6 +402,21 @@ export default function RegisterForm({
               <p className="mt-1.5 text-[11.5px] text-ink-faint">
                 Los usuarios de equipos de RF acceden a un precio especial.
               </p>
+              {usaRf && (
+                <div className="mt-[18px]">
+                  <label htmlFor="fecha_adquisicion_rf" className={labelClass}>
+                    Fecha de adquisición <span className="text-orange">*</span>
+                  </label>
+                  <input
+                    id="fecha_adquisicion_rf"
+                    name="fecha_adquisicion_rf"
+                    type="date"
+                    required={usaRf}
+                    max={new Date().toISOString().slice(0, 10)}
+                    className={inputClass}
+                  />
+                </div>
+              )}
             </div>
         </div>
 
@@ -446,6 +475,20 @@ export default function RegisterForm({
                 required
                 autoComplete="email"
                 placeholder="nombre@correo.com"
+                className={inputClass}
+              />
+            </div>
+            <div className="mb-[18px]">
+              <label htmlFor="ciudad" className={labelClass}>
+                Ciudad <span className="text-orange">*</span>
+              </label>
+              <input
+                id="ciudad"
+                name="ciudad"
+                type="text"
+                required
+                autoComplete="address-level2"
+                placeholder="Ej. Lima"
                 className={inputClass}
               />
             </div>

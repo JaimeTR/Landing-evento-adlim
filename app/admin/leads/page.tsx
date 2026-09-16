@@ -33,7 +33,7 @@ function toCsv(rows: Lead[]) {
     "Nombres",
     "Apellido",
     "Especialidad",
-    "País",
+    "Ciudad",
     "Participación",
     "Usa RF",
     "Teléfono",
@@ -142,7 +142,7 @@ export default function LeadsPage() {
                 setPage(0);
                 setSearch(e.target.value);
               }}
-              placeholder="Buscar por nombre, especialidad, email o país..."
+              placeholder="Buscar por nombre, especialidad, email o ciudad..."
               className="w-full rounded-xl border border-input-border bg-input-bg py-2.5 pl-10 pr-3.5 text-[13.5px] text-ink transition-colors hover:border-[color-mix(in_srgb,var(--accent)_55%,var(--input-border))] focus:border-accent focus:outline-none"
             />
           </div>
@@ -193,7 +193,7 @@ export default function LeadsPage() {
                 <tr className="border-b border-divider text-[11px] font-bold uppercase tracking-[.6px] text-ink-faint">
                   <th className="px-5 py-3">Nombres</th>
                   <th className="px-5 py-3">Especialidad</th>
-                  <th className="px-5 py-3">País</th>
+                  <th className="px-5 py-3">Ciudad</th>
                   <th className="px-5 py-3">Participación</th>
                   <th className="px-5 py-3">Contacto</th>
                   <th className="px-5 py-3">Estado</th>
