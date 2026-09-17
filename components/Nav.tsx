@@ -4,8 +4,14 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
 
+const NAV_LINKS = [
+  { id: "agenda", label: "Cronograma" },
+  { id: "precios", label: "Inversión" },
+];
+
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
     function onScroll() {
@@ -14,6 +20,22 @@ export default function Nav() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const sections = NAV_LINKS.map((l) => document.getElementById(l.id)).filter(
+      (el): el is HTMLElement => el !== null
+    );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: "-40% 0px -50% 0px" }
+    );
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -47,6 +69,20 @@ export default function Nav() {
             className="absolute inset-y-0 left-0 hidden h-full w-auto dark:block"
           />
         </span>
+        <div className="hidden items-center gap-6 lg:flex">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.id}
+              href={`#${link.id}`}
+              className={`text-[13px] font-bold uppercase tracking-[.4px] transition-colors ${
+                active === link.id ? "text-orange" : "text-ink-soft hover:text-orange"
+              }`}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
         <div className="flex items-center gap-3.5">
           <div className="hidden whitespace-nowrap text-[11.5px] font-bold uppercase tracking-[.8px] text-ink-soft md:block">
             <b className="text-orange">12 nov.</b> · Lima, Perú
