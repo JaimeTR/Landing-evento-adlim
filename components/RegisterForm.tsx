@@ -5,7 +5,8 @@ import { ChevronsRight, MessageCircle, CalendarDays } from "lucide-react";
 import confetti from "canvas-confetti";
 import { insertLead, type TipoParticipacion } from "@/lib/supabase/leads";
 
-const WHATSAPP_NUMBER = "51914507338";
+const WHATSAPP_NUMBER =
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "51914507338";
 
 const PARTICIPACION_OPTIONS: Array<{ value: TipoParticipacion; label: string; desc: string }> = [
   { value: "hands-on", label: "Hands-On", desc: "Práctica quirúrgica en vivo" },
@@ -168,7 +169,10 @@ export default function RegisterForm({
       tipo_participacion: payload.tipoParticipacion,
       usa_rf: payload.usaRf,
       pais: payload.ciudad,
+      ciudad: payload.ciudad || undefined,
       telefono: payload.whatsapp,
+      telefono_opcional: payload.telefonoOpcional || undefined,
+      fecha_adquisicion_rf: payload.fechaAdquisicionRf || undefined,
       email: payload.email,
       origen: "landing-webinar-fraxx",
     });
@@ -433,12 +437,13 @@ export default function RegisterForm({
                   required
                   autoComplete="tel"
                   inputMode="numeric"
-                  pattern="[0-9]{9}"
-                  maxLength={9}
-                  title="9 dígitos"
+                  pattern="[0-9]{7,15}"
+                  maxLength={15}
+                  minLength={7}
+                  title="De 7 a 15 dígitos, solo números"
                   placeholder="Ej. 987654321"
                   onInput={(e) => {
-                    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 9);
+                    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 15);
                   }}
                   className={inputClass}
                 />
@@ -453,17 +458,20 @@ export default function RegisterForm({
                   type="tel"
                   autoComplete="tel"
                   inputMode="numeric"
-                  pattern="[0-9]{9}"
-                  maxLength={9}
-                  title="9 dígitos"
+                  pattern="[0-9]{7,15}"
+                  maxLength={15}
+                  title="De 7 a 15 dígitos, solo números"
                   placeholder="Ej. 012345678"
                   onInput={(e) => {
-                    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 9);
+                    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 15);
                   }}
                   className={inputClass}
                 />
               </div>
             </div>
+            <p className="-mt-2 mb-[18px] text-[11.5px] text-ink-faint">
+              Si estás fuera de Perú, incluye el código de país (solo números, sin "+").
+            </p>
             <div className="mb-[18px]">
               <label htmlFor="email" className={labelClass}>
                 Correo electrónico <span className="text-orange">*</span>

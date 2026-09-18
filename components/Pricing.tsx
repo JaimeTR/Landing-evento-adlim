@@ -44,11 +44,22 @@ const NOTES = [
   { label: "Lanzamiento", desc: "hasta el 30 de setiembre" },
   { label: "Preventa", desc: "del 1 al 20 de octubre" },
   { label: "Precio regular", desc: "a partir del 21 de octubre" },
-  { label: "Precio especial RF", desc: "válido hasta el día previo al Hands-On" },
+  { label: "Precio especial RF", desc: "para usuarios de equipos RF Loktal, válido hasta el día previo al Hands-On" },
 ];
+
+function getVigenteLabel(): string {
+  const now = new Date();
+  const y = now.getFullYear();
+  // Mismas fechas que NOTES: lanzamiento hasta el 30 de setiembre,
+  // preventa del 1 al 20 de octubre, regular desde el 21 de octubre.
+  if (now <= new Date(y, 8, 30, 23, 59, 59)) return "Lanzamiento";
+  if (now <= new Date(y, 9, 20, 23, 59, 59)) return "Preventa";
+  return "Precio regular";
+}
 
 export default function Pricing() {
   const { openModal } = useBookingModal();
+  const vigente = getVigenteLabel();
 
   return (
     <div className="w-full" id="precios">
@@ -61,7 +72,7 @@ export default function Pricing() {
               </h2>
               <CreditCard className="h-8 w-8 text-orange" strokeWidth={2.2} />
             </div>
-            <p className="text-[14.5px] text-ink-soft">Precio según tu fecha de inscripción.</p>
+            <p className="text-[14.5px] text-ink-soft">Precio según tu fecha de inscripción. Hoy rige: <b className="text-ink">{vigente}</b>.</p>
           </div>
         </ScrollReveal>
 
@@ -85,14 +96,29 @@ export default function Pricing() {
                 </div>
 
                 <div className="mb-5 flex flex-col gap-2 border-t border-divider pt-5">
-                  {plan.tiers.map((t) => (
-                    <div key={t.label} className="flex items-center justify-between text-[13.5px]">
-                      <span className="text-ink-soft">{t.label}</span>
-                      <span className="font-semibold text-ink">{t.price}</span>
-                    </div>
-                  ))}
+                  {plan.tiers.map((t) => {
+                    const isVigente = t.label === vigente;
+                    return (
+                      <div
+                        key={t.label}
+                        className={`flex items-center justify-between rounded-lg px-2 py-1 text-[13.5px] ${
+                          isVigente ? "bg-[color-mix(in_srgb,var(--teal)_10%,transparent)]" : ""
+                        }`}
+                      >
+                        <span className="text-ink-soft">
+                          {t.label}
+                          {isVigente && (
+                            <span className="ml-2 rounded-full bg-teal px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.5px] text-white">
+                              Hoy
+                            </span>
+                          )}
+                        </span>
+                        <span className="font-semibold text-ink">{t.price}</span>
+                      </div>
+                    );
+                  })}
                   <div className="mt-1 flex items-center justify-between rounded-xl bg-[color-mix(in_srgb,var(--orange)_10%,transparent)] px-3 py-2 text-[13.5px]">
-                    <span className="font-bold text-orange">Especial · Usuarios RF</span>
+                    <span className="font-bold text-orange">Especial · Usuarios RF Loktal</span>
                     <span className="font-bold text-orange">{plan.rf}</span>
                   </div>
                 </div>

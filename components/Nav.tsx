@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
+import { useBookingModal } from "./BookingModalContext";
 
 const NAV_LINKS = [
   { id: "agenda", label: "Cronograma" },
@@ -12,6 +13,7 @@ const NAV_LINKS = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string | null>(null);
+  const { openModal } = useBookingModal();
 
   useEffect(() => {
     function onScroll() {
@@ -87,6 +89,13 @@ export default function Nav() {
           <div className="hidden whitespace-nowrap text-[11.5px] font-bold uppercase tracking-[.8px] text-ink-soft md:block">
             <b className="text-orange">12 nov.</b> · Lima, Perú
           </div>
+          <button
+            type="button"
+            onClick={() => openModal()}
+            className="hidden rounded-full bg-orange px-5 py-2 text-[12.5px] font-bold uppercase tracking-[.4px] text-white transition-transform hover:scale-[1.03] sm:inline-flex sm:items-center"
+          >
+            Reservar
+          </button>
           <ThemeToggle />
         </div>
       </nav>

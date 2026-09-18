@@ -11,7 +11,10 @@ export interface Lead {
   apellido: string;
   especialidad: string;
   pais: string;
+  ciudad?: string | null;
   telefono: string;
+  telefono_opcional?: string | null;
+  fecha_adquisicion_rf?: string | null;
   email: string;
   tipo_participacion: TipoParticipacion;
   usa_rf: boolean;
@@ -23,14 +26,27 @@ export interface Lead {
 export type NewLead = Pick<
   Lead,
   "nombres" | "apellido" | "especialidad" | "pais" | "telefono" | "email" | "tipo_participacion" | "usa_rf" | "origen"
->;
+> &
+  Partial<Pick<Lead, "ciudad" | "telefono_opcional" | "fecha_adquisicion_rf">>;
 
 export async function insertLead(lead: NewLead) {
   // Sin .select(): anon solo tiene policy de INSERT, no de SELECT — pedir la
   // fila de vuelta (representation) hace que Postgres exija también la
   // policy de SELECT sobre esa fila y falle con 42501 aunque el INSERT en
   // sí sea válido.
-  return supabase.from("leads").insert(lead);
+  const { ciudad, telefono_opcional, fecha_adquisicion_rf, ...base } = lead;
+  const extra: Record<string, string> = {};
+  if (ciudad) extra.ciudad = ciudad;
+  if (telefono_opcional) extra.telefono_opcional = telefono_opcional;
+  if (fecha_adquisicion_rf) extra.fecha_adquisicion_rf = fecha_adquisicion_rf;
+  const attempt = await supabase.from("leads").insert({ ...base, ...extra });
+  if (attempt.error && Object.keys(extra).length > 0) {
+    // Si la migración supabase/migration_add_contact_fields.sql aún no se
+    // aplicó en Supabase, reintentar sin las columnas nuevas para no perder
+    // el registro.
+    return supabase.from("leads").insert(base);
+  }
+  return attempt;
 }
 
 export async function listLeads(params: { search?: string; limit?: number; offset?: number } = {}) {

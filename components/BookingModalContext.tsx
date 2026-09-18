@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { X } from "lucide-react";
 import type { TipoParticipacion } from "@/lib/supabase/leads";
 import RegisterForm from "./RegisterForm";
@@ -18,6 +18,20 @@ export default function BookingModalProvider({ children }: { children: ReactNode
   const [open, setOpen] = useState(false);
   const [tipo, setTipo] = useState<TipoParticipacion | undefined>(undefined);
 
+  useEffect(() => {
+    if (!open) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   function openModal(t?: TipoParticipacion) {
     setTipo(t);
     setOpen(true);
@@ -28,6 +42,9 @@ export default function BookingModalProvider({ children }: { children: ReactNode
       {children}
       {open && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Reserva tu cupo"
           className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[color-mix(in_srgb,var(--ink)_55%,transparent)] px-4 py-8 backdrop-blur-sm"
           onClick={() => setOpen(false)}
         >

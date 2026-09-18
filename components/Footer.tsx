@@ -6,8 +6,10 @@ import ScrollReveal from "./ScrollReveal";
 import CloverMark from "./CloverMark";
 import { useBookingModal } from "./BookingModalContext";
 
+const DEFAULT_WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "51914507338";
+
 const SOPORTE_URL =
-  "https://wa.me/51914507338?text=" +
+  `https://wa.me/${DEFAULT_WHATSAPP}?text=` +
   encodeURIComponent("Hola, necesito ayuda con algo sobre el Hands-On de ADLIM Partners.");
 
 const linkClass =
@@ -79,7 +81,7 @@ export default function Footer() {
             Lima - Perú
           </span>
           <div className="flex flex-col items-center gap-x-6 gap-y-2 sm:flex-row sm:flex-wrap">
-            <a href="https://wa.me/51914507338" target="_blank" rel="noopener" className={linkClass}>
+            <a href={`https://wa.me/${DEFAULT_WHATSAPP}`} target="_blank" rel="noopener" className={linkClass}>
               <MessageCircle className="h-4 w-4 text-teal-soft" strokeWidth={1.8} />
               914 507 338
             </a>

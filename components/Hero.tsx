@@ -78,12 +78,17 @@ export default function Hero() {
               </span>
               <span className={`reveal-line ${stage >= 2 ? "in" : ""}`}>
                 <span className="block text-[clamp(28px,4.6vw,48px)] font-normal text-ink">
-                  con el sistema{" "}
+                  con radiofrecuencia fraccionada
+                </span>
+              </span>
+              <span className={`reveal-line ${stage >= 2 ? "in" : ""}`}>
+                <span className="block text-[clamp(32px,5.4vw,55px)] font-bold uppercase tracking-[0.05em]">
+                  <span className="text-ink">Sistema </span>
                   <span
-                    className="shine-text text-[clamp(32px,5.4vw,55px)] font-bold uppercase tracking-[0.05em]"
+                    className="shine-text"
                     style={{ animationDelay: "1.5s", ["--shine-base" as string]: "var(--orange)" }}
                   >
-                    FRAXX
+                    Fraxx
                   </span>
                 </span>
               </span>

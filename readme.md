@@ -23,8 +23,19 @@ cp .env.example .env.local   # completar con las credenciales de Supabase
 npm run dev
 ```
 
-Ejecutar `supabase/schema.sql` en el SQL Editor de Supabase antes del primer uso. Crear los usuarios del
+Ejecutar `supabase/schema.sql` en el SQL Editor de Supabase antes del primer uso. Si la tabla `leads`
+ya existía, ejecutar también `supabase/migration_add_contact_fields.sql` para guardar ciudad,
+teléfono opcional y fecha de adquisición del equipo RF. Crear los usuarios del
 panel admin en Supabase Authentication.
+
+## Variables de entorno
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SITE_URL=      # obligatorio en producción: dominio real para previews OG/Twitter
+NEXT_PUBLIC_WHATSAPP_NUMBER=  # opcional; por defecto 51914507338
+```
 
 ## Build para cPanel
 
@@ -34,8 +45,13 @@ npm run build
 
 Sube el contenido de la carpeta `out/` a `public_html` (o subcarpeta) en cPanel.
 
-## Pendiente
+## Estado del contenido
 
-- Reemplazar `public/icon.png` (favicon) por el logo real.
-- Agregar foto real del Dr. Marco Gaxiola (hoy se muestra un avatar con iniciales "MG").
-- Agregar logo real de ADLIM Partners (hoy se muestra como texto).
+- Logo ADLIM Partners, foto del Dr. Marco Gaxiola y foto del equipo FRAXX ya integrados
+  (`public/brand/`, `public/dr-marco-gaxiola*.jpg|png`, `public/fraxx-device-crop.jpg`).
+- Favicon: `app/icon.png`.
+
+## Pendiente de definir con el organizador
+
+- Hueco de agenda entre las 12:30 y las 13:00 (el Lunch termina 12:30 y la práctica
+  empieza 13:00): confirmar qué va en ese bloque antes de mostrarlo.
