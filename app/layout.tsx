@@ -21,15 +21,13 @@ const description =
   "Técnicas avanzadas de cirugía estética genital femenina con el Sistema FRAXX. Dr. Marco Gaxiola C. Prácticas en vivo con pacientes. 12 de noviembre, Lima - Perú. Cupos limitados.";
 
 export const metadata: Metadata = {
-  // TODO: set NEXT_PUBLIC_SITE_URL to the real production domain before deploying,
-  // otherwise shared-link OG image previews (WhatsApp, etc.) will point at localhost.
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title,
   description,
   openGraph: {
     title,
     description,
-    images: ["/brand/adlim-logo.png"],
+    images: [{ url: "/og-event.png", width: 1200, height: 630 }],
     locale: "es_PE",
     type: "website",
   },
@@ -37,7 +35,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/brand/adlim-logo.png"],
+    images: ["/og-event.png"],
   },
 };
 

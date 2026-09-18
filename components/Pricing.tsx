@@ -4,6 +4,7 @@ import { CreditCard } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import FlechaMark from "./FlechaMark";
 import { useBookingModal } from "./BookingModalContext";
+import { getVigenteLabel } from "@/lib/event";
 import type { TipoParticipacion } from "@/lib/supabase/leads";
 
 const PLANS: Array<{
@@ -46,16 +47,6 @@ const NOTES = [
   { label: "Precio regular", desc: "a partir del 21 de octubre" },
   { label: "Precio especial RF", desc: "para usuarios de equipos RF Loktal, válido hasta el día previo al Hands-On" },
 ];
-
-function getVigenteLabel(): string {
-  const now = new Date();
-  const y = now.getFullYear();
-  // Mismas fechas que NOTES: lanzamiento hasta el 30 de setiembre,
-  // preventa del 1 al 20 de octubre, regular desde el 21 de octubre.
-  if (now <= new Date(y, 8, 30, 23, 59, 59)) return "Lanzamiento";
-  if (now <= new Date(y, 9, 20, 23, 59, 59)) return "Preventa";
-  return "Precio regular";
-}
 
 export default function Pricing() {
   const { openModal } = useBookingModal();

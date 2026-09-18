@@ -37,13 +37,17 @@ NEXT_PUBLIC_SITE_URL=      # obligatorio en producción: dominio real para previ
 NEXT_PUBLIC_WHATSAPP_NUMBER=  # opcional; por defecto 51914507338
 ```
 
-## Build para cPanel
+## Build para cPanel (partners.adlim.com)
 
 ```bash
 npm run build
 ```
 
-Sube el contenido de la carpeta `out/` a `public_html` (o subcarpeta) en cPanel.
+El build usa `.env.production` (`NEXT_PUBLIC_SITE_URL=https://partners.adlim.com`)
+para que los previews de WhatsApp/OG apunten al dominio real. Sube el contenido
+de la carpeta `out/` a `public_html` (o subcarpeta) en cPanel. Ya está configurado
+`output: 'export'` + `trailingSlash` + imágenes sin optimizar, que es lo que un
+hosting Apache estático necesita.
 
 ## Estado del contenido
 

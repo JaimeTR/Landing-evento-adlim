@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { X } from "lucide-react";
 import type { TipoParticipacion } from "@/lib/supabase/leads";
 import RegisterForm from "./RegisterForm";
@@ -18,17 +18,41 @@ export default function BookingModalProvider({ children }: { children: ReactNode
   const [open, setOpen] = useState(false);
   const [tipo, setTipo] = useState<TipoParticipacion | undefined>(undefined);
 
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const prevFocusRef = useRef<Element | null>(null);
+
   useEffect(() => {
     if (!open) return;
+    prevFocusRef.current = document.activeElement;
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      // Focus-trap: el Tab no sale del diálogo mientras está abierto.
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     }
     document.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    dialogRef.current?.focus();
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
+      (prevFocusRef.current as HTMLElement | null)?.focus?.();
     };
   }, [open]);
 
@@ -42,6 +66,8 @@ export default function BookingModalProvider({ children }: { children: ReactNode
       {children}
       {open && (
         <div
+          ref={dialogRef}
+          tabIndex={-1}
           role="dialog"
           aria-modal="true"
           aria-label="Reserva tu cupo"

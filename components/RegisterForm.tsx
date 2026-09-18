@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ChevronsRight, MessageCircle, CalendarDays } from "lucide-react";
 import confetti from "canvas-confetti";
 import { insertLead, type TipoParticipacion } from "@/lib/supabase/leads";
+import { buildWhatsappMessage } from "@/lib/event";
 
 const WHATSAPP_NUMBER =
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "51914507338";
@@ -37,36 +38,6 @@ const STEPS = [
 const inputClass =
   "w-full rounded-full border border-input-border bg-input-bg px-5 py-[13.5px] text-[14.5px] text-ink placeholder:text-ink-faint transition-colors duration-150 hover:border-[color-mix(in_srgb,var(--navy)_55%,var(--input-border))] focus:border-navy focus:outline-none focus:shadow-[0_0_0_4px_color-mix(in_srgb,var(--navy)_14%,transparent)]";
 const labelClass = "mb-1.5 block text-[12.5px] font-bold text-ink";
-
-function buildWhatsappMessage(data: {
-  nombres: string;
-  apellido: string;
-  especialidad: string;
-  tipoParticipacion: TipoParticipacion;
-  usaRf: boolean;
-  fechaAdquisicionRf: string;
-  whatsapp: string;
-  telefonoOpcional: string;
-  email: string;
-  ciudad: string;
-}) {
-  const tipoLabel = data.tipoParticipacion === "hands-on" ? "Hands-On (práctica quirúrgica)" : "Live Observer (transmisión audiovisual)";
-  const lines = [
-    `Hola, soy *${data.nombres} ${data.apellido}* y quiero inscribirme al curso *Técnicas Avanzadas de Cirugía Estética Genital Femenina - Sistema FRAXX* (12 nov., Lima - Perú).`,
-    "",
-    `Especialidad: ${data.especialidad}`,
-    `Tipo de participación: ${tipoLabel}`,
-    `¿Tiene equipo de radiofrecuencia Loktal?: ${data.usaRf ? "Sí" : "No"}`,
-    ...(data.usaRf && data.fechaAdquisicionRf ? [`Fecha de adquisición del equipo: ${data.fechaAdquisicionRf}`] : []),
-    `WhatsApp: ${data.whatsapp}`,
-    ...(data.telefonoOpcional ? [`Teléfono: ${data.telefonoOpcional}`] : []),
-    `Email: ${data.email}`,
-    `Ciudad: ${data.ciudad}`,
-    "",
-    "Quedo atento(a) a las indicaciones para procesar mi pago.",
-  ];
-  return lines.join("\n");
-}
 
 export default function RegisterForm({
   defaultTipoParticipacion,
@@ -140,9 +111,6 @@ export default function RegisterForm({
 
     const form = formRef.current;
     if (!form) return;
-
-    const honeypot = (form.elements.namedItem("campo_extra") as HTMLInputElement).checked;
-    if (honeypot) return;
 
     if (!validateStep(stepIndex)) return;
 
@@ -470,7 +438,7 @@ export default function RegisterForm({
               </div>
             </div>
             <p className="-mt-2 mb-[18px] text-[11.5px] text-ink-faint">
-              Si estás fuera de Perú, incluye el código de país (solo números, sin "+").
+              Si estás fuera de Perú, incluye el código de país (solo números, sin signo +).
             </p>
             <div className="mb-[18px]">
               <label htmlFor="email" className={labelClass}>
@@ -502,16 +470,6 @@ export default function RegisterForm({
             </div>
         </div>
       </div>
-
-      <input
-        type="checkbox"
-        name="campo_extra"
-        id="campo_extra"
-        style={{ position: "absolute", left: "-9999px" }}
-        tabIndex={-1}
-        aria-hidden="true"
-        autoComplete="off"
-      />
 
       <div className="mt-1.5 flex flex-col gap-3">
         <button
