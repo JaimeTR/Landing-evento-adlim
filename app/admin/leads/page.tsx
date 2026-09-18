@@ -36,7 +36,9 @@ function toCsv(rows: Lead[]) {
     "Ciudad",
     "Participación",
     "Usa RF",
+    "Fecha adquisición RF",
     "Teléfono",
+    "Teléfono opcional",
     "Email",
     "Estado",
     "Pago",
@@ -47,10 +49,12 @@ function toCsv(rows: Lead[]) {
       r.nombres,
       r.apellido,
       r.especialidad,
-      r.pais,
+      r.ciudad ?? r.pais,
       r.tipo_participacion,
       r.usa_rf ? "Sí" : "No",
+      r.fecha_adquisicion_rf ?? "",
       r.telefono,
+      r.telefono_opcional ?? "",
       r.email,
       r.status,
       r.estado_pago,
@@ -83,7 +87,7 @@ export default function LeadsPage() {
     if (search.trim()) {
       const term = `%${search.trim()}%`;
       query = query.or(
-        `nombres.ilike.${term},apellido.ilike.${term},especialidad.ilike.${term},email.ilike.${term},pais.ilike.${term}`
+        `nombres.ilike.${term},apellido.ilike.${term},especialidad.ilike.${term},email.ilike.${term},pais.ilike.${term},ciudad.ilike.${term}`
       );
     }
 
@@ -221,15 +225,21 @@ export default function LeadsPage() {
                         <div className="font-semibold text-ink">
                           {lead.nombres} {lead.apellido}
                         </div>
-                        <div className="text-[12px] text-ink-faint">{lead.usa_rf ? "Usa RF" : "No usa RF"}</div>
+                        <div className="text-[12px] text-ink-faint">
+                          {lead.usa_rf ? "Usa RF" : "No usa RF"}
+                          {lead.usa_rf && lead.fecha_adquisicion_rf && ` · RF desde ${lead.fecha_adquisicion_rf}`}
+                        </div>
                       </td>
                       <td className="px-5 py-3 text-ink-soft">{lead.especialidad}</td>
-                      <td className="px-5 py-3 text-ink-soft">{lead.pais}</td>
+                      <td className="px-5 py-3 text-ink-soft">{lead.ciudad ?? lead.pais}</td>
                       <td className="px-5 py-3 text-ink-soft">
                         {lead.tipo_participacion === "hands-on" ? "Hands-On" : "Live Observer"}
                       </td>
                       <td className="px-5 py-3">
                         <div className="text-ink-soft">{lead.telefono}</div>
+                        {lead.telefono_opcional && (
+                          <div className="text-[12px] text-ink-soft">Alt: {lead.telefono_opcional}</div>
+                        )}
                         <div className="text-[12px] text-ink-faint">{lead.email}</div>
                       </td>
                       <td className="px-5 py-3">
