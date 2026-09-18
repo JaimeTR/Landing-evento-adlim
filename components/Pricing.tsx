@@ -85,7 +85,7 @@ export default function Pricing() {
                 }`}
               >
                 {plan.featured && (
-                  <span className="absolute -top-3 left-6 rounded-full bg-orange px-3 py-1 text-[11px] font-bold uppercase tracking-[.6px] text-white">
+                  <span className="absolute -top-3 left-6 rounded-full bg-orange px-3 py-1 text-[11px] font-bold uppercase tracking-[.6px] text-[#19203a]">
                     Más elegido
                   </span>
                 )}
@@ -108,7 +108,7 @@ export default function Pricing() {
                         <span className="text-ink-soft">
                           {t.label}
                           {isVigente && (
-                            <span className="ml-2 rounded-full bg-teal px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.5px] text-white">
+                            <span className="ml-2 rounded-full bg-teal px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.5px] text-[#19203a]">
                               Hoy
                             </span>
                           )}
@@ -118,8 +118,8 @@ export default function Pricing() {
                     );
                   })}
                   <div className="mt-1 flex items-center justify-between rounded-xl bg-[color-mix(in_srgb,var(--orange)_10%,transparent)] px-3 py-2 text-[13.5px]">
-                    <span className="font-bold text-orange">Especial · Usuarios RF Loktal</span>
-                    <span className="font-bold text-orange">{plan.rf}</span>
+                    <span className="font-bold text-orange-ink">Especial · Usuarios RF Loktal</span>
+                    <span className="font-bold text-orange-ink">{plan.rf}</span>
                   </div>
                 </div>
 

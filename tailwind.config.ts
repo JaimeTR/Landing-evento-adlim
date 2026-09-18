@@ -16,6 +16,7 @@ const config: Config = {
         teal: "var(--teal)",
         "teal-soft": "var(--teal-soft)",
         orange: "var(--orange)",
+        "orange-ink": "var(--orange-ink)",
         amber: "var(--amber)",
         magenta: "var(--magenta)",
         olive: "var(--olive)",

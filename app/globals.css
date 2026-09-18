@@ -41,6 +41,7 @@
   --scrollbar-track: rgba(34, 56, 111, 0.12);
   --ok: #1f8a5f;
   --err: #d64545;
+  --orange-ink: var(--orange);
   --dot-color: rgba(34, 56, 111, 0.08);
   --select-option-bg: #ffffff;
   --select-option-fg: #19203a;
@@ -88,12 +89,12 @@
   color-scheme: dark;
   --ink: #ffffff;
   --ink-soft: #c7cee6;
-  --ink-faint: #92a0c9;
+  --ink-faint: #b3bedf;
   --surface: #1b2d5c;
   --surface-soft: #22386f;
-  --panel-bg: #22386f;
-  --panel-border: rgba(255, 255, 255, 0.4);
-  --panel-shadow: rgba(0, 0, 0, 0.4);
+  --panel-bg: #2b4480;
+  --panel-border: rgba(255, 255, 255, 0.6);
+  --panel-shadow: rgba(0, 0, 0, 0.55);
   --input-bg: #ffffff;
   --input-fg: #19203a;
   --input-border: rgba(255, 255, 255, 0.2);
@@ -110,6 +111,7 @@
   --ok: #7fd9ac;
   --err: #ff8a8a;
   --navy-fg: var(--teal-soft);
+  --orange-ink: #ffa95e;
 
   --admin-wash: radial-gradient(circle, var(--dot-color) 1.4px, transparent 1.4px),
     linear-gradient(

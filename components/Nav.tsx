@@ -53,7 +53,7 @@ export default function Nav() {
           background: scrolled ? "color-mix(in srgb, var(--nav-bg) 65%, transparent)" : "var(--nav-bg)",
         }}
       >
-        <span className={`relative inline-block transition-all duration-300 ${scrolled ? "h-8 w-[140px]" : "h-11 w-[190px]"}`}>
+        <span className={`relative inline-block flex-none transition-all duration-300 ${scrolled ? "h-8 w-[120px] sm:w-[140px]" : "h-9 w-[150px] sm:h-11 sm:w-[190px]"}`}>
           <Image
             src="/brand/adlim-logo-horizontal.png"
             alt="ADLIM Partners"
@@ -77,7 +77,7 @@ export default function Nav() {
               key={link.id}
               href={`#${link.id}`}
               className={`text-[13px] font-bold uppercase tracking-[.4px] transition-colors ${
-                active === link.id ? "text-orange" : "text-ink-soft hover:text-orange"
+                active === link.id ? "text-orange-ink" : "text-ink-soft hover:text-orange-ink"
               }`}
             >
               {link.label}
@@ -87,12 +87,12 @@ export default function Nav() {
 
         <div className="flex items-center gap-3.5">
           <div className="hidden whitespace-nowrap text-[11.5px] font-bold uppercase tracking-[.8px] text-ink-soft md:block">
-            <b className="text-orange">12 nov.</b> · Lima, Perú
+            <b className="text-orange-ink">12 nov.</b> · Lima, Perú
           </div>
           <button
             type="button"
             onClick={() => openModal()}
-            className="hidden rounded-full bg-orange px-5 py-2 text-[12.5px] font-bold uppercase tracking-[.4px] text-white transition-transform hover:scale-[1.03] sm:inline-flex sm:items-center"
+            className="inline-flex items-center rounded-full bg-orange px-4 py-2 text-[12px] font-bold uppercase tracking-[.4px] text-white transition-transform hover:scale-[1.03] sm:px-5 sm:text-[12.5px]"
           >
             Reservar
           </button>

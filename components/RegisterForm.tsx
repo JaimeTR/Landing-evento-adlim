@@ -297,7 +297,7 @@ export default function RegisterForm({
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="mb-[18px]">
                 <label htmlFor="nombres" className={labelClass}>
-                  Nombres <span className="text-orange">*</span>
+                  Nombres <span className="text-orange-ink">*</span>
                 </label>
                 <input
                   id="nombres"
@@ -311,7 +311,7 @@ export default function RegisterForm({
               </div>
               <div className="mb-[18px]">
                 <label htmlFor="apellido" className={labelClass}>
-                  Apellido <span className="text-orange">*</span>
+                  Apellido <span className="text-orange-ink">*</span>
                 </label>
                 <input
                   id="apellido"
@@ -326,7 +326,7 @@ export default function RegisterForm({
             </div>
             <div className="mb-[18px]">
               <label htmlFor="especialidad" className={labelClass}>
-                Especialidad / Profesión <span className="text-orange">*</span>
+                Especialidad / Profesión <span className="text-orange-ink">*</span>
               </label>
               {especialidadOtro ? (
                 <input
@@ -387,7 +387,7 @@ export default function RegisterForm({
             </div>
             <div className="mb-[18px]">
               <label htmlFor="usa_rf" className={labelClass}>
-                ¿Tiene tu equipo de radiofrecuencia de marca Loktal? <span className="text-orange">*</span>
+                ¿Tiene tu equipo de radiofrecuencia de marca Loktal? <span className="text-orange-ink">*</span>
               </label>
               <select
                 id="usa_rf"
@@ -409,7 +409,7 @@ export default function RegisterForm({
               {usaRf && (
                 <div className="mt-[18px]">
                   <label htmlFor="fecha_adquisicion_rf" className={labelClass}>
-                    Fecha de adquisición <span className="text-orange">*</span>
+                    Fecha de adquisición <span className="text-orange-ink">*</span>
                   </label>
                   <input
                     id="fecha_adquisicion_rf"
@@ -428,7 +428,7 @@ export default function RegisterForm({
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="mb-[18px]">
                 <label htmlFor="whatsapp" className={labelClass}>
-                  WhatsApp <span className="text-orange">*</span>
+                  WhatsApp <span className="text-orange-ink">*</span>
                 </label>
                 <input
                   id="whatsapp"
@@ -474,7 +474,7 @@ export default function RegisterForm({
             </p>
             <div className="mb-[18px]">
               <label htmlFor="email" className={labelClass}>
-                Correo electrónico <span className="text-orange">*</span>
+                Correo electrónico <span className="text-orange-ink">*</span>
               </label>
               <input
                 id="email"
@@ -488,7 +488,7 @@ export default function RegisterForm({
             </div>
             <div className="mb-[18px]">
               <label htmlFor="ciudad" className={labelClass}>
-                Ciudad <span className="text-orange">*</span>
+                Ciudad <span className="text-orange-ink">*</span>
               </label>
               <input
                 id="ciudad"

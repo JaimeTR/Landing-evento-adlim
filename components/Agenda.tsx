@@ -97,19 +97,20 @@ export default function Agenda() {
           <div className="flex flex-col gap-4">
             {AGENDA.map((item) => {
               const { color, Icon } = TYPE_STYLES[item.type];
+              const accent = color === "orange" ? "var(--orange-ink)" : `var(--${color})`;
               return (
                 <ScrollReveal key={item.time + item.title} className="relative flex items-center gap-4 sm:gap-5">
                   <div
                     className="relative z-10 flex h-10 w-10 flex-none items-center justify-center rounded-full border-2 bg-surface sm:h-12 sm:w-12"
                     style={{ borderColor: `var(--${color})` }}
                   >
-                    <Icon className="h-[18px] w-[18px] sm:h-5 sm:w-5" style={{ color: `var(--${color})` }} strokeWidth={2.2} />
+                    <Icon className="h-[18px] w-[18px] sm:h-5 sm:w-5" style={{ color: accent }} strokeWidth={2.2} />
                   </div>
 
                   <div className="panel flex-1 px-5 py-4 sm:px-6">
                     <div
                       className="text-[13.5px] font-bold uppercase tracking-[.6px]"
-                      style={{ color: `var(--${color})` }}
+                      style={{ color: accent }}
                     >
                       {item.time}
                     </div>

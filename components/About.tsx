@@ -92,7 +92,7 @@ export default function About() {
                 <circle cx="20" cy="20" r="18.5" fill="none" stroke="#fff" strokeOpacity="0.6" strokeWidth="1" />
               </svg>
             </h3>
-            <p className="mb-3 text-[21.5px] font-bold uppercase tracking-[.6px] text-orange">
+            <p className="mb-3 text-[21.5px] font-bold uppercase tracking-[.6px] text-orange-ink">
               Ginecología Estética y Regenerativa
             </p>
             <p className="mb-5 text-[13px] leading-[20px] text-ink-faint">
@@ -114,7 +114,7 @@ export default function About() {
               {VALUES.map((v) => (
                 <div
                   key={v.title}
-                  className="group rounded-[24px] border border-white/40 bg-white/25 px-5 py-6 text-left shadow-[0_8px_32px_rgba(0,0,0,0.08)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 dark:border-white/15 dark:bg-white/10"
+                  className="group rounded-[24px] border border-white/40 bg-white/25 px-5 py-6 text-left shadow-[0_8px_32px_rgba(0,0,0,0.08)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 dark:border-white/25 dark:bg-white/[0.16]"
                 >
                   <div
                     className="icon-float mb-3.5 flex h-11 w-11 items-center justify-center rounded-xl transition-transform duration-300 group-hover:-rotate-12 group-hover:scale-110"
