@@ -127,6 +127,21 @@ export default function About() {
                 </div>
               ))}
             </div>
+
+            <div className="mt-6 flex flex-col items-center gap-2 lg:items-start">
+              <span className="text-[10.5px] font-bold uppercase tracking-[.6px] text-ink-faint">
+                Respaldado por
+              </span>
+              <div className="inline-flex rounded-xl bg-white px-4 py-2.5 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+                <Image
+                  src="/brand/sociedad-peruana-ginecologia.png"
+                  alt="Sociedad Peruana de Obstetricia y Ginecología"
+                  width={1303}
+                  height={431}
+                  className="h-10 w-auto sm:h-11"
+                />
+              </div>
+            </div>
           </div>
         </ScrollReveal>
       </div>

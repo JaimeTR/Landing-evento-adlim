@@ -86,9 +86,11 @@ export default function Nav() {
         </div>
 
         <div className="flex items-center gap-3.5">
-          <div className="hidden whitespace-nowrap text-[11.5px] font-bold uppercase tracking-[.8px] text-ink-soft md:block">
-            <b className="text-orange-ink">12 nov.</b> · Lima, Perú
-          </div>
+          {!scrolled && (
+            <div className="hidden whitespace-nowrap text-[11.5px] font-bold uppercase tracking-[.8px] text-ink-soft md:block">
+              <b className="text-orange-ink">12 nov.</b> · Lima, Perú
+            </div>
+          )}
           <button
             type="button"
             onClick={() => openModal()}
