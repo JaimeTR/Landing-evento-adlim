@@ -60,7 +60,7 @@ export default function About() {
               />
 
               {/* Desktop: badge tucked into the empty corner beside the photo */}
-              <div className="absolute left-0 top-[38%] z-20 hidden flex-col items-start gap-1.5 lg:flex">
+              <div className="absolute left-0 top-[28%] z-20 hidden flex-col items-start gap-1.5 lg:flex">
                 <span className="text-[10px] font-bold uppercase tracking-[.6px] text-ink-faint">
                   Respaldado por
                 </span>
