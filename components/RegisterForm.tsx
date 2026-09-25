@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { ChevronsRight, MessageCircle, CalendarDays, Phone, Mail, MapPin } from "lucide-react";
+import { ChevronsRight, MessageCircle, CalendarDays, Phone, Mail, MapPin, User, Briefcase, Zap } from "lucide-react";
 import confetti from "canvas-confetti";
 import { insertLead, type TipoParticipacion } from "@/lib/supabase/leads";
 import { buildWhatsappMessage } from "@/lib/event";
@@ -268,66 +268,75 @@ export default function RegisterForm({
                 <label htmlFor="nombres" className={labelClass}>
                   Nombres <span className="text-orange-ink">*</span>
                 </label>
-                <input
-                  id="nombres"
-                  name="nombres"
-                  type="text"
-                  required
-                  autoComplete="given-name"
-                  placeholder="Ej. María"
-                  className={inputClass}
-                />
+                <div className="relative">
+                  <User className={fieldIconClass} strokeWidth={1.8} />
+                  <input
+                    id="nombres"
+                    name="nombres"
+                    type="text"
+                    required
+                    autoComplete="given-name"
+                    placeholder="Ej. María"
+                    className={`${inputClass} pl-11`}
+                  />
+                </div>
               </div>
               <div className="mb-[18px]">
                 <label htmlFor="apellido" className={labelClass}>
                   Apellido <span className="text-orange-ink">*</span>
                 </label>
-                <input
-                  id="apellido"
-                  name="apellido"
-                  type="text"
-                  required
-                  autoComplete="family-name"
-                  placeholder="Ej. Fernández"
-                  className={inputClass}
-                />
+                <div className="relative">
+                  <User className={fieldIconClass} strokeWidth={1.8} />
+                  <input
+                    id="apellido"
+                    name="apellido"
+                    type="text"
+                    required
+                    autoComplete="family-name"
+                    placeholder="Ej. Fernández"
+                    className={`${inputClass} pl-11`}
+                  />
+                </div>
               </div>
             </div>
             <div className="mb-[18px]">
               <label htmlFor="especialidad" className={labelClass}>
                 Especialidad / Profesión <span className="text-orange-ink">*</span>
               </label>
-              {especialidadOtro ? (
-                <input
-                  id="especialidad"
-                  name="especialidad"
-                  type="text"
-                  required
-                  autoFocus
-                  placeholder="Escribe tu especialidad"
-                  className={inputClass}
-                />
-              ) : (
-                <select
-                  id="especialidad"
-                  name="especialidad"
-                  required
-                  defaultValue=""
-                  onChange={(e) => {
-                    if (e.target.value === "Otro") setEspecialidadOtro(true);
-                  }}
-                  className={`themed-select ${inputClass}`}
-                >
-                  <option value="" disabled>
-                    Selecciona una opción
-                  </option>
-                  {ESPECIALIDAD_OPTIONS.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
+              <div className="relative">
+                <Briefcase className={fieldIconClass} strokeWidth={1.8} />
+                {especialidadOtro ? (
+                  <input
+                    id="especialidad"
+                    name="especialidad"
+                    type="text"
+                    required
+                    autoFocus
+                    placeholder="Escribe tu especialidad"
+                    className={`${inputClass} pl-11`}
+                  />
+                ) : (
+                  <select
+                    id="especialidad"
+                    name="especialidad"
+                    required
+                    defaultValue=""
+                    onChange={(e) => {
+                      if (e.target.value === "Otro") setEspecialidadOtro(true);
+                    }}
+                    className={`themed-select ${inputClass} pl-11`}
+                  >
+                    <option value="" disabled>
+                      Selecciona una opción
                     </option>
-                  ))}
-                </select>
-              )}
+                    {ESPECIALIDAD_OPTIONS.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
             </div>
         </div>
 
@@ -358,20 +367,23 @@ export default function RegisterForm({
               <label htmlFor="usa_rf" className={labelClass}>
                 ¿Tiene tu equipo de radiofrecuencia de marca Loktal? <span className="text-orange-ink">*</span>
               </label>
-              <select
-                id="usa_rf"
-                name="usa_rf"
-                required
-                defaultValue=""
-                onChange={(e) => setUsaRf(e.target.value === "si")}
-                className={`themed-select ${inputClass}`}
-              >
-                <option value="" disabled>
-                  Selecciona una opción
-                </option>
-                <option value="si">Sí</option>
-                <option value="no">No</option>
-              </select>
+              <div className="relative">
+                <Zap className={fieldIconClass} strokeWidth={1.8} />
+                <select
+                  id="usa_rf"
+                  name="usa_rf"
+                  required
+                  defaultValue=""
+                  onChange={(e) => setUsaRf(e.target.value === "si")}
+                  className={`themed-select ${inputClass} pl-11`}
+                >
+                  <option value="" disabled>
+                    Selecciona una opción
+                  </option>
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
               <p className="mt-1.5 text-[11.5px] text-ink-faint">
                 Los usuarios de equipos de RF acceden a un precio especial.
               </p>
@@ -380,14 +392,17 @@ export default function RegisterForm({
                   <label htmlFor="fecha_adquisicion_rf" className={labelClass}>
                     Fecha de adquisición <span className="text-orange-ink">*</span>
                   </label>
-                  <input
-                    id="fecha_adquisicion_rf"
-                    name="fecha_adquisicion_rf"
-                    type="date"
-                    required={usaRf}
-                    max={new Date().toISOString().slice(0, 10)}
-                    className={inputClass}
-                  />
+                  <div className="relative">
+                    <CalendarDays className={fieldIconClass} strokeWidth={1.8} />
+                    <input
+                      id="fecha_adquisicion_rf"
+                      name="fecha_adquisicion_rf"
+                      type="date"
+                      required={usaRf}
+                      max={new Date().toISOString().slice(0, 10)}
+                      className={`${inputClass} pl-11`}
+                    />
+                  </div>
                 </div>
               )}
             </div>
