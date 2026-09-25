@@ -61,7 +61,7 @@ export default function About() {
 
               {/* Desktop: badge tucked into the empty corner beside the photo */}
               <div className="absolute left-0 top-[18%] z-20 hidden flex-col items-start gap-1.5 lg:flex">
-                <span className="text-[10px] font-bold uppercase tracking-[.6px] text-ink-faint">
+                <span className="text-[8px] font-bold uppercase tracking-[.5px] text-ink-faint">
                   Respaldado por
                 </span>
                 <Image
@@ -69,7 +69,7 @@ export default function About() {
                   alt="Sociedad Peruana de Obstetricia y Ginecología"
                   width={314}
                   height={431}
-                  className="h-20 w-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.25)]"
+                  className="h-28 w-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.25)]"
                 />
               </div>
             </div>
