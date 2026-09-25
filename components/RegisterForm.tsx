@@ -40,6 +40,26 @@ const inputClass =
 const labelClass = "mb-1.5 block text-[12.5px] font-bold text-ink";
 const fieldIconClass = "pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-ink-faint";
 
+// WhatsApp siempre es celular: agrupa en 3-3-3 ("999 999 999").
+function formatCelularInput(raw: string): string {
+  const digits = raw.replace(/\D/g, "").slice(0, 9);
+  return digits.replace(/(\d{3})(?=\d)/g, "$1 ");
+}
+
+// Teléfono opcional acepta fijo (7 dígitos, "999 9999") o celular (9 dígitos, "999 999 999").
+function formatPhoneInput(raw: string): string {
+  const digits = raw.replace(/\D/g, "").slice(0, 9);
+  if (digits.length <= 7) {
+    const a = digits.slice(0, 3);
+    const b = digits.slice(3, 7);
+    return b ? `${a} ${b}` : a;
+  }
+  const a = digits.slice(0, 3);
+  const b = digits.slice(3, 6);
+  const c = digits.slice(6, 9);
+  return [a, b, c].filter(Boolean).join(" ");
+}
+
 export default function RegisterForm({
   defaultTipoParticipacion,
 }: {
@@ -123,8 +143,8 @@ export default function RegisterForm({
       tipoParticipacion: (String(data.get("tipo_participacion") || "hands-on")) as TipoParticipacion,
       usaRf: String(data.get("usa_rf") || "") === "si",
       fechaAdquisicionRf: String(data.get("fecha_adquisicion_rf") || "").trim(),
-      whatsapp: String(data.get("whatsapp") || "").trim(),
-      telefonoOpcional: String(data.get("telefono_opcional") || "").trim(),
+      whatsapp: String(data.get("whatsapp") || "").replace(/\s/g, "").trim(),
+      telefonoOpcional: String(data.get("telefono_opcional") || "").replace(/\s/g, "").trim(),
       email: String(data.get("email") || "").trim(),
       ciudad: String(data.get("ciudad") || "").trim(),
     };
@@ -423,13 +443,12 @@ export default function RegisterForm({
                     required
                     autoComplete="tel"
                     inputMode="numeric"
-                    pattern="[0-9]{9}"
-                    maxLength={9}
-                    minLength={9}
-                    title="9 dígitos (número de celular)"
-                    placeholder="Ej. 987654321"
+                    pattern="[0-9]{3} [0-9]{3} [0-9]{3}"
+                    maxLength={11}
+                    title="9 dígitos (número de celular), formato 999 999 999"
+                    placeholder="Ej. 987 654 321"
                     onInput={(e) => {
-                      e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 9);
+                      e.currentTarget.value = formatCelularInput(e.currentTarget.value);
                     }}
                     className={`${inputClass} pl-11`}
                   />
@@ -447,12 +466,12 @@ export default function RegisterForm({
                     type="tel"
                     autoComplete="tel"
                     inputMode="numeric"
-                    pattern="[0-9]{7}|[0-9]{9}"
-                    maxLength={9}
-                    title="7 dígitos (fijo) o 9 dígitos (celular)"
-                    placeholder="Ej. 012345678"
+                    pattern="[0-9]{3} [0-9]{4}|[0-9]{3} [0-9]{3} [0-9]{3}"
+                    maxLength={11}
+                    title="7 dígitos (fijo, 999 9999) o 9 dígitos (celular, 999 999 999)"
+                    placeholder="Ej. 234 5678"
                     onInput={(e) => {
-                      e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 9);
+                      e.currentTarget.value = formatPhoneInput(e.currentTarget.value);
                     }}
                     className={`${inputClass} pl-11`}
                   />
