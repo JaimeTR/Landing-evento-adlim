@@ -16,7 +16,7 @@ export default function Home() {
           <SiteBackground />
           <Hero />
           <About />
-          <div className="flex flex-col gap-24 py-20 sm:gap-28">
+          <div className="flex flex-col gap-24 py-10 sm:gap-28 sm:py-20">
             <Agenda />
             <Pricing />
           </div>
