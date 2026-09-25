@@ -124,27 +124,13 @@ export default function About() {
                   </div>
                   <h4 className="mb-2 text-lg font-bold leading-snug text-ink">{v.title}</h4>
                   {v.title === "Respaldo clínico" ? (
-                    <>
-                      <Image
-                        src="/brand/sociedad-peruana-ginecologia.png"
-                        alt="Sociedad Peruana de Obstetricia y Ginecología"
-                        width={1303}
-                        height={431}
-                        className="h-auto w-full sm:hidden"
-                      />
-                      <div className="hidden flex-col items-start gap-1.5 sm:flex">
-                        <Image
-                          src="/brand/sociedad-peruana-ginecologia-icon.png"
-                          alt="Sociedad Peruana de Obstetricia y Ginecología"
-                          width={314}
-                          height={431}
-                          className="h-11 w-auto"
-                        />
-                        <span className="text-[10.5px] font-bold uppercase leading-tight tracking-[.2px] text-ink-faint">
-                          Sociedad Peruana de Obstetricia y Ginecología
-                        </span>
-                      </div>
-                    </>
+                    <Image
+                      src="/brand/sociedad-peruana-ginecologia.png"
+                      alt="Sociedad Peruana de Obstetricia y Ginecología"
+                      width={1303}
+                      height={431}
+                      className="h-auto w-full"
+                    />
                   ) : (
                     <p className="text-[12.5px] leading-[19px] text-ink-faint">{v.desc}</p>
                   )}
