@@ -58,23 +58,6 @@ export default function About() {
                   WebkitMaskImage: "linear-gradient(to bottom, black 82%, transparent 100%)",
                 }}
               />
-
-              {/* Desktop: badge tucked into the empty corner beside the photo */}
-              <div className="absolute left-0 top-[4%] z-20 hidden w-[110px] flex-col items-center gap-1.5 text-center lg:flex">
-                <span className="text-[8px] font-bold uppercase tracking-[.5px] text-ink-faint">
-                  Respaldado por
-                </span>
-                <Image
-                  src="/brand/sociedad-peruana-ginecologia-icon.png"
-                  alt=""
-                  width={314}
-                  height={431}
-                  className="h-28 w-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.25)]"
-                />
-                <span className="text-[9px] font-bold uppercase leading-tight tracking-[.2px] text-ink-soft">
-                  Sociedad Peruana de Obstetricia y Ginecología
-                </span>
-              </div>
             </div>
           </div>
 
@@ -140,24 +123,24 @@ export default function About() {
                     <v.Icon className="h-5 w-5" style={{ color: `var(--${v.color})` }} strokeWidth={2.2} />
                   </div>
                   <h4 className="mb-2 text-lg font-bold leading-snug text-ink">{v.title}</h4>
-                  <p className="text-[12.5px] leading-[19px] text-ink-faint">{v.desc}</p>
+                  {v.title === "Respaldo clínico" ? (
+                    <div className="flex flex-col items-start gap-1.5">
+                      <Image
+                        src="/brand/sociedad-peruana-ginecologia-icon.png"
+                        alt="Sociedad Peruana de Obstetricia y Ginecología"
+                        width={314}
+                        height={431}
+                        className="h-11 w-auto"
+                      />
+                      <span className="text-[10.5px] font-bold uppercase leading-tight tracking-[.2px] text-ink-faint">
+                        Sociedad Peruana de Obstetricia y Ginecología
+                      </span>
+                    </div>
+                  ) : (
+                    <p className="text-[12.5px] leading-[19px] text-ink-faint">{v.desc}</p>
+                  )}
                 </div>
               ))}
-            </div>
-
-            <div className="mt-6 flex w-full flex-col items-center gap-2 lg:hidden">
-              <span className="text-[10.5px] font-bold uppercase tracking-[.6px] text-ink-faint">
-                Respaldado por
-              </span>
-              <div className="flex w-full max-w-[380px] justify-center rounded-xl bg-white px-4 py-3 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
-                <Image
-                  src="/brand/sociedad-peruana-ginecologia.png"
-                  alt="Sociedad Peruana de Obstetricia y Ginecología"
-                  width={1303}
-                  height={431}
-                  className="h-auto w-full"
-                />
-              </div>
             </div>
           </div>
         </ScrollReveal>

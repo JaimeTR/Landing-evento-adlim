@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { ChevronsRight, MessageCircle, CalendarDays } from "lucide-react";
+import { ChevronsRight, MessageCircle, CalendarDays, Phone, Mail, MapPin } from "lucide-react";
 import confetti from "canvas-confetti";
 import { insertLead, type TipoParticipacion } from "@/lib/supabase/leads";
 import { buildWhatsappMessage } from "@/lib/event";
@@ -38,6 +38,7 @@ const STEPS = [
 const inputClass =
   "w-full rounded-full border border-input-border bg-input-bg px-5 py-[13.5px] text-[14.5px] text-ink placeholder:text-ink-faint transition-colors duration-150 hover:border-[color-mix(in_srgb,var(--navy)_55%,var(--input-border))] focus:border-navy focus:outline-none focus:shadow-[0_0_0_4px_color-mix(in_srgb,var(--navy)_14%,transparent)]";
 const labelClass = "mb-1.5 block text-[12.5px] font-bold text-ink";
+const fieldIconClass = "pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-ink-faint";
 
 export default function RegisterForm({
   defaultTipoParticipacion,
@@ -398,75 +399,84 @@ export default function RegisterForm({
                 <label htmlFor="whatsapp" className={labelClass}>
                   WhatsApp <span className="text-orange-ink">*</span>
                 </label>
-                <input
-                  id="whatsapp"
-                  name="whatsapp"
-                  type="tel"
-                  required
-                  autoComplete="tel"
-                  inputMode="numeric"
-                  pattern="[0-9]{7,15}"
-                  maxLength={15}
-                  minLength={7}
-                  title="De 7 a 15 dígitos, solo números"
-                  placeholder="Ej. 987654321"
-                  onInput={(e) => {
-                    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 15);
-                  }}
-                  className={inputClass}
-                />
+                <div className="relative">
+                  <MessageCircle className={fieldIconClass} strokeWidth={1.8} />
+                  <input
+                    id="whatsapp"
+                    name="whatsapp"
+                    type="tel"
+                    required
+                    autoComplete="tel"
+                    inputMode="numeric"
+                    pattern="[0-9]{9}"
+                    maxLength={9}
+                    minLength={9}
+                    title="9 dígitos (número de celular)"
+                    placeholder="Ej. 987654321"
+                    onInput={(e) => {
+                      e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 9);
+                    }}
+                    className={`${inputClass} pl-11`}
+                  />
+                </div>
               </div>
               <div className="mb-[18px]">
                 <label htmlFor="telefono_opcional" className={labelClass}>
                   Teléfono
                 </label>
-                <input
-                  id="telefono_opcional"
-                  name="telefono_opcional"
-                  type="tel"
-                  autoComplete="tel"
-                  inputMode="numeric"
-                  pattern="[0-9]{7,15}"
-                  maxLength={15}
-                  title="De 7 a 15 dígitos, solo números"
-                  placeholder="Ej. 012345678"
-                  onInput={(e) => {
-                    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 15);
-                  }}
-                  className={inputClass}
-                />
+                <div className="relative">
+                  <Phone className={fieldIconClass} strokeWidth={1.8} />
+                  <input
+                    id="telefono_opcional"
+                    name="telefono_opcional"
+                    type="tel"
+                    autoComplete="tel"
+                    inputMode="numeric"
+                    pattern="[0-9]{7}|[0-9]{9}"
+                    maxLength={9}
+                    title="7 dígitos (fijo) o 9 dígitos (celular)"
+                    placeholder="Ej. 012345678"
+                    onInput={(e) => {
+                      e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 9);
+                    }}
+                    className={`${inputClass} pl-11`}
+                  />
+                </div>
               </div>
             </div>
-            <p className="-mt-2 mb-[18px] text-[11.5px] text-ink-faint">
-              Si estás fuera de Perú, incluye el código de país (solo números, sin signo +).
-            </p>
             <div className="mb-[18px]">
               <label htmlFor="email" className={labelClass}>
                 Correo electrónico <span className="text-orange-ink">*</span>
               </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                autoComplete="email"
-                placeholder="nombre@correo.com"
-                className={inputClass}
-              />
+              <div className="relative">
+                <Mail className={fieldIconClass} strokeWidth={1.8} />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  autoComplete="email"
+                  placeholder="nombre@correo.com"
+                  className={`${inputClass} pl-11`}
+                />
+              </div>
             </div>
             <div className="mb-[18px]">
               <label htmlFor="ciudad" className={labelClass}>
                 Ciudad <span className="text-orange-ink">*</span>
               </label>
-              <input
-                id="ciudad"
-                name="ciudad"
-                type="text"
-                required
-                autoComplete="address-level2"
-                placeholder="Ej. Lima"
-                className={inputClass}
-              />
+              <div className="relative">
+                <MapPin className={fieldIconClass} strokeWidth={1.8} />
+                <input
+                  id="ciudad"
+                  name="ciudad"
+                  type="text"
+                  required
+                  autoComplete="address-level2"
+                  placeholder="Ej. Lima"
+                  className={`${inputClass} pl-11`}
+                />
+              </div>
             </div>
         </div>
       </div>
