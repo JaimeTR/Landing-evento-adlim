@@ -64,13 +64,13 @@ export default function About() {
                 <span className="text-[10px] font-bold uppercase tracking-[.6px] text-ink-faint">
                   Respaldado por
                 </span>
-                <div className="inline-flex rounded-xl bg-white px-3.5 py-2 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+                <div className="inline-flex rounded-xl bg-white p-2 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
                   <Image
-                    src="/brand/sociedad-peruana-ginecologia.png"
+                    src="/brand/sociedad-peruana-ginecologia-icon.png"
                     alt="Sociedad Peruana de Obstetricia y Ginecología"
-                    width={1303}
+                    width={314}
                     height={431}
-                    className="h-9 w-auto"
+                    className="h-12 w-auto"
                   />
                 </div>
               </div>
