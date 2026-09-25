@@ -60,19 +60,17 @@ export default function About() {
               />
 
               {/* Desktop: badge tucked into the empty corner beside the photo */}
-              <div className="absolute left-0 top-[28%] z-20 hidden flex-col items-start gap-1.5 lg:flex">
+              <div className="absolute left-0 top-[18%] z-20 hidden flex-col items-start gap-1.5 lg:flex">
                 <span className="text-[10px] font-bold uppercase tracking-[.6px] text-ink-faint">
                   Respaldado por
                 </span>
-                <div className="inline-flex rounded-xl bg-white p-2 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
-                  <Image
-                    src="/brand/sociedad-peruana-ginecologia-icon.png"
-                    alt="Sociedad Peruana de Obstetricia y Ginecología"
-                    width={314}
-                    height={431}
-                    className="h-12 w-auto"
-                  />
-                </div>
+                <Image
+                  src="/brand/sociedad-peruana-ginecologia-icon.png"
+                  alt="Sociedad Peruana de Obstetricia y Ginecología"
+                  width={314}
+                  height={431}
+                  className="h-20 w-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.25)]"
+                />
               </div>
             </div>
           </div>
