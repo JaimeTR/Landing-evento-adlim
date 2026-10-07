@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { CalendarDays, Coffee, DoorOpen, FlagTriangleRight, Mic, Stethoscope } from "lucide-react";
+import { CalendarDays, Coffee, DoorOpen, FlagTriangleRight, MapPin, Mic, Stethoscope } from "lucide-react";
+import { VENUE } from "@/lib/event";
 import ScrollReveal from "./ScrollReveal";
 import CloverMark from "./CloverMark";
 
@@ -87,6 +88,21 @@ export default function Agenda() {
             <CalendarDays className="h-8 w-8 text-orange" strokeWidth={2.2} />
           </div>
           <p className="text-[14.5px] text-ink-soft">Jueves 12 de noviembre de 2026.</p>
+          <a
+            href={VENUE.mapsUrl}
+            target="_blank"
+            rel="noopener"
+            className="mt-4 inline-flex max-w-full items-center gap-3 rounded-2xl border border-divider bg-[color-mix(in_srgb,var(--surface)_70%,transparent)] px-4 py-2.5 text-left backdrop-blur-md transition-transform hover:-translate-y-0.5"
+          >
+            <Image src="/brand/nacer-logo.png" alt="Nacer" width={1811} height={734} className="h-9 w-auto flex-none" />
+            <span className="min-w-0 text-[12.5px] leading-[17px] text-ink-soft">
+              <span className="flex items-center gap-1 font-bold text-ink">
+                <MapPin className="h-3.5 w-3.5 flex-none text-orange-ink" strokeWidth={2.2} />
+                {VENUE.building}
+              </span>
+              {VENUE.address}
+            </span>
+          </a>
         </ScrollReveal>
 
         <div className="relative">

@@ -10,6 +10,15 @@ export function getVigenteLabel(now: Date = new Date()): string {
   return "Precio regular";
 }
 
+export const VENUE = {
+  name: "Nacer · Centro de Reproducción Humana de Lima",
+  building: "Centro Empresarial Platino",
+  address: "Av. Ricardo Palma 341, Miraflores 15074",
+  mapsUrl:
+    "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent("Centro Empresarial Platino, Av. Ricardo Palma 341, Miraflores 15074"),
+};
+
 export interface WhatsappPayload {
   nombres: string;
   apellido: string;
