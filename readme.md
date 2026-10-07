@@ -1,4 +1,4 @@
-# Landing — Curso Hands-On FRAXX
+# Landing — Curso Hands-On FRAXX - Hostinger
 
 Landing de inscripción para el curso "Técnicas Avanzadas de Cirugía Estética Genital Femenina con el
 Sistema FRAXX", Dr. Marco Gaxiola C., 12 de noviembre, Lima - Perú. 1er Hands-On por ADLIM Partners.
